@@ -18,4 +18,8 @@ public class ProductService {
     public List<Product> getAllProducts() {
         return productRepo.findAll();
     }
+
+    public Product addNewProduct(Product product) {
+        return productRepo.save(product);
+    }
 }
