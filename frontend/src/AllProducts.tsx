@@ -17,7 +17,7 @@ export default function AllProducts(){
     return(
         <>
             {products?.map(p =>
-                <ProductCard product={p} />
+                <ProductCard key={p.id} product={p} />
             )
             }
         </>
