@@ -1,4 +1,4 @@
 package org.example.backend.model;
 
-public record ProductDto() {
+public record ProductDto(String name) {
 }
