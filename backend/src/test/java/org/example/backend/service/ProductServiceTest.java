@@ -4,6 +4,7 @@ import org.example.backend.model.Product;
 import org.example.backend.model.ProductDto;
 import org.example.backend.repo.ProductRepo;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 import java.util.List;
@@ -51,6 +52,19 @@ class ProductServiceTest {
         assertEquals("Pink Lady Apple", updatedApple.name());
         verify(mockRepo).findById("001");
         verify(mockRepo).save(updatedApple);
+        verifyNoMoreInteractions(mockRepo);
+    }
+
+    @Test
+    void updateProductById_shouldThrowException() {
+        ProductRepo mockRepo = mock(ProductRepo.class);
+        ProductService productService = new ProductService(mockRepo);
+        ProductDto updated = new ProductDto("Pink Lady Apple");
+
+        when(mockRepo.findById("005")).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () -> productService.updateProductById("005", updated));
+        verify(mockRepo).findById("005");
         verifyNoMoreInteractions(mockRepo);
     }
 
