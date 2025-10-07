@@ -1,12 +1,15 @@
 package org.example.backend.service;
 
 import org.example.backend.model.Product;
+import org.example.backend.model.ProductDto;
 import org.example.backend.repo.ProductRepo;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.mock;
 
@@ -30,4 +33,25 @@ class ProductServiceTest {
         verify(repo).findAll();
         assertEquals(products, actual);
     }
+
+    @Test
+    void updateProductById_shouldUpdateName() {
+        ProductRepo mockRepo = mock(ProductRepo.class);
+        ProductService productService = new ProductService(mockRepo);
+
+        Product existing = new Product("001", "Apple");
+        ProductDto updated = new ProductDto("Pink Lady Apple");
+
+        when(mockRepo.findById("001")).thenReturn(Optional.of(existing));
+        when(mockRepo.save(any(Product.class))).thenAnswer(i -> i.getArgument(0));
+
+        Product updatedApple = productService.updateProductById("001", updated);
+
+        assertEquals("001", updatedApple.id());
+        assertEquals("Pink Lady Apple", updatedApple.name());
+        verify(mockRepo).findById("001");
+        verify(mockRepo).save(updatedApple);
+        verifyNoMoreInteractions(mockRepo);
+    }
+
 }
