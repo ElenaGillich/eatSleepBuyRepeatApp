@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -23,6 +24,7 @@ class ProductControllerTest {
     @Autowired
     private ProductRepo productRepo;
 
+    @DirtiesContext
     @Test
     void getAllProducts_returnListWithOneProduct_WhenCalled() throws Exception {
         //given
@@ -42,9 +44,12 @@ class ProductControllerTest {
                         """
         ));
     }
+
+    @DirtiesContext
     @Test
     void getAllProducts_returnEmptyList_WhenNoProductAdded() throws Exception {
         //given
+
         //when
         mockMvc.perform(get("/api/products"))
                 //then
