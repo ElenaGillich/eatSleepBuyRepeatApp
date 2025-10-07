@@ -17,7 +17,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
-
 class ProductControllerTest {
 
     @Autowired
@@ -29,7 +28,7 @@ class ProductControllerTest {
 
     @DirtiesContext
     @Test
-    void updateProductById() throws Exception {
+    void updateProductById_shouldUpdateProduct() throws Exception {
         Product banana = new Product("001", "Banana");
         productRepo.save(banana);
         ProductDto bananaDto = new ProductDto("Chiquita Banana");
@@ -49,6 +48,20 @@ class ProductControllerTest {
                                                                              "name": "Chiquita Banana"
                                                                            }
                                                                            """));
+    }
+
+    @DirtiesContext
+    @Test
+    void updateProductById_shouldThrowException() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/products/005")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                            {
+                              "name": "Pink Lady Apple"
+                            }
+                        """)
+                )
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
 
