@@ -1,10 +1,12 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import type {GroceryList} from "./model/GroceryList.tsx";
+import {useNavigate} from "react-router-dom";
 
 export default function AllGroceryLists() {
 
     const [groceryList, setGroceryList] = useState<GroceryList[]>([]);
+    const nav = useNavigate();
 
     function getAllGroceryLists() {
         axios.get("api/grocery-list")
@@ -18,6 +20,12 @@ export default function AllGroceryLists() {
 
     return (
         <>
+            <div className={"add-grocery"}>
+                <button onClick={() => nav("/addGroceryList")}>
+                    Add new grocery list
+                </button>
+            </div>
+
             <h2>Your grocery lists:</h2>
 
             {groceryList.map(list => (
@@ -31,7 +39,6 @@ export default function AllGroceryLists() {
 
                 </div>
             ))}
-
         </>
     )
 
