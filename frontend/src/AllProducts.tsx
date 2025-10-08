@@ -14,7 +14,8 @@ export default function AllProducts() {
     useEffect(() => {
         getAllProducts()
     }, []);
-    return (
+
+    return(
         <>
             {products?.map(p =>
                 <ProductCard key={p.id} product={p} />
