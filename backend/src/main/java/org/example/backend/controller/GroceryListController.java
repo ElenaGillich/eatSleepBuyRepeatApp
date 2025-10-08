@@ -26,4 +26,9 @@ public class GroceryListController {
         return ResponseEntity.ok(groceryLists);
     }
 
+    @PostMapping
+    public GroceryList addGroceryList(@RequestBody GroceryList groceryList) {
+        return service.addGroceryList(groceryList);
+    }
+
 }

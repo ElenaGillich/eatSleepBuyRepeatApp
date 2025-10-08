@@ -10,12 +10,20 @@ import java.util.List;
 public class GroceryListService {
 
     private final GroceryListRepo groceryListRepo;
+    private final IdService idService;
 
-    public GroceryListService(GroceryListRepo groceryListRepo) {
+    public GroceryListService(GroceryListRepo groceryListRepo, IdService idService) {
         this.groceryListRepo = groceryListRepo;
+        this.idService = idService;
     }
 
     public List<GroceryList> getAllGroceryLists() {
         return groceryListRepo.findAll();
+    }
+
+    public GroceryList addGroceryList(GroceryList groceryList) {
+        GroceryList newGroceryList = groceryList.withId(idService.randomId());
+
+        return groceryListRepo.save(newGroceryList);
     }
 }

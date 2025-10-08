@@ -22,8 +22,11 @@ class GroceryListServiceTest {
     @Mock
     private GroceryListRepo groceryListRepo = mock(GroceryListRepo.class);
 
+    @Mock
+    private IdService idService = mock(IdService.class);
+
     @InjectMocks
-    private GroceryListService groceryListService = new GroceryListService(groceryListRepo);
+    private GroceryListService groceryListService = new GroceryListService(groceryListRepo, idService);
 
     @Test
     void getAllGroceryLists_shouldReturnAllListsFromRepo() {
