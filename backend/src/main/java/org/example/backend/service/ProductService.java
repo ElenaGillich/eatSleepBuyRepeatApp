@@ -12,9 +12,11 @@ import java.util.List;
 @Service
 public class ProductService {
 
+    private final IdService idService;
     private final ProductRepo productRepo;
 
-    public ProductService(ProductRepo productRepo) {
+    public ProductService(IdService idService, ProductRepo productRepo) {
+        this.idService = idService;
         this.productRepo = productRepo;
     }
 
@@ -23,7 +25,8 @@ public class ProductService {
     }
 
     public Product addNewProduct(Product product) {
-        return productRepo.save(product);
+        Product newProduct = new Product(idService.generateNewUuid(), product.name());
+        return productRepo.save(newProduct);
     }
 
     public Product updateProductById(String id, ProductDto value) {
