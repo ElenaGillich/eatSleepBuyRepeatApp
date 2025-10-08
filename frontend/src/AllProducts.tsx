@@ -13,6 +13,7 @@ export default function AllProducts(){
     useEffect(() => {
         getAllProducts()
     }, []);
+
     return(
         <>
             {products?.map(p =>

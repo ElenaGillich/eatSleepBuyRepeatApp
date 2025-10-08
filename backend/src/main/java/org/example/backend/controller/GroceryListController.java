@@ -2,9 +2,8 @@ package org.example.backend.controller;
 
 import org.example.backend.model.GroceryList;
 import org.example.backend.service.GroceryListService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,8 +18,12 @@ public class GroceryListController {
     }
 
     @GetMapping
-    public List<GroceryList> getAllGroceryLists() {
-        return service.getAllGroceryLists();
-}
+    public ResponseEntity<List<GroceryList>> getAllGroceryLists() {
+        List<GroceryList> groceryLists = service.getAllGroceryLists();
+        if(groceryLists.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(groceryLists);
+    }
 
 }
