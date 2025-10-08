@@ -49,12 +49,35 @@ export default function CreateNewList(props: NewGroceryListProps) {
 
     return (
         <div>
+            <h2>New grocery list</h2>
             <form className={"form"}>
-                <h2>New grocery list</h2>
+                <p>You can choose from the list or add a product in the input field.</p>
 
                 <div className={"display-flex"}>
-                    <label> Product </label>
+                    <label>Available products</label>
 
+                    <select
+                        className={"form-field select"}
+                        value={""}
+                        onChange={(event) => setGroceryName(event.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                addProductToTheGroceryList();
+                            }
+                        }}
+                    >
+                        <option>
+                            Products to select...
+                        </option>
+                        {availableProducts.map(p =>
+                            <option> {p.name} </option>
+                        )}
+                    </select>
+                </div>
+
+                <div className={"display-flex"}>
+                    <label> Selected product </label>
                     <input
                         type={"text"}
                         name={"groceryName"}
@@ -78,18 +101,17 @@ export default function CreateNewList(props: NewGroceryListProps) {
 
                     {
                         groceryName.trim().length > 0 && quantity > 0
-                            ? <button type={"button"} onClick={addProductToTheGroceryList}> + </button>
+                            ? <button type={"button"} onClick={addProductToTheGroceryList}> Add </button>
                             : ""
                     }
                 </div>
 
                 {
-                    groceryListItems.length > 0 &&
-                    <>
+                    groceryListItems.length > 0 && <>
                         <div className={"product-list"}>
                             {groceryListItems.map(item =>
                                 <p key={item.product.name}>
-                                    {item.product.name} (amount: {item.quantity})
+                                    {item.product.name} ({item.quantity} units)
                                 </p>
                             )}
                         </div>
