@@ -46,7 +46,6 @@ class GroceryListControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/grocery-list"))
                 .andExpect(status().isNoContent())
                 .andExpect(content().string(""));
-
     }
 
     @Test
