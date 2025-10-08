@@ -1,6 +1,7 @@
 package org.example.backend.controller;
 
 import org.example.backend.model.Product;
+import org.example.backend.model.ProductDto;
 import org.example.backend.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,5 +25,10 @@ public class ProductController {
     @PostMapping
     public Product addNewProduct(@RequestBody Product product){
         return productService.addNewProduct(product);
+    }
+
+    @PutMapping("/{id}")
+    public Product updateProductById(@PathVariable String id, @RequestBody ProductDto value) {
+        return productService.updateProductById(id, value);
     }
 }

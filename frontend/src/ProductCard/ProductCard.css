@@ -1,0 +1,9 @@
+.product {
+    background-color: blue;
+    border-radius: 5px;
+
+}
+.product:hover {
+         background-color: dodgerblue;
+         font-size: 18px;
+     }
