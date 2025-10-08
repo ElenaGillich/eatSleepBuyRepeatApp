@@ -26,4 +26,14 @@ public class GroceryListController {
         return ResponseEntity.ok(groceryLists);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteGroceryList(@PathVariable String id) {
+        service.deleteGroceryList(id);
+        return ResponseEntity.noContent().build(); //204
+    }
+/*
+    @PostMapping
+    public GroceryList addList(@RequestBody GroceryList list) {
+        return service.addList(list);
+    }*/
 }
