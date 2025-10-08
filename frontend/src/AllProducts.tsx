@@ -3,7 +3,7 @@ import type {Product} from "./model/Product.tsx";
 import axios from "axios";
 import ProductCard from "./ProductCard/ProductCard.tsx";
 
-export default function AllProducts(){
+export default function AllProducts() {
     const [products, setProducts] = useState<Product[]>([]);
 
     function getAllProducts() {
@@ -14,7 +14,7 @@ export default function AllProducts(){
     useEffect(() => {
         getAllProducts()
     }, []);
-    return(
+    return (
         <>
             {products?.map(p =>
                 <ProductCard key={p.id} product={p} />
