@@ -19,7 +19,6 @@ export default function CreateNewList(props: NewGroceryListProps) {
 
     function save() {
         axios.post("api/grocery-list", {
-            id: "",
             products: groceryListItems,
             status: "OPEN"
         })

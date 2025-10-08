@@ -1,6 +1,7 @@
 package org.example.backend.service;
 
 import org.example.backend.model.GroceryList;
+import org.example.backend.model.GroceryListDto;
 import org.example.backend.repo.GroceryListRepo;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,12 @@ public class GroceryListService {
         return groceryListRepo.findAll();
     }
 
-    public GroceryList addGroceryList(GroceryList groceryList) {
-        GroceryList newGroceryList = groceryList.withId(idService.randomId());
+    public GroceryList addGroceryList(GroceryListDto groceryListDto) {
+        GroceryList newGroceryList = new GroceryList(
+                idService.randomId(),
+                groceryListDto.products(),
+                groceryListDto.status()
+        );
 
         return groceryListRepo.save(newGroceryList);
     }
