@@ -3,10 +3,7 @@ import type {Product} from "./model/Product.tsx";
 import axios from "axios";
 import ProductCard from "./ProductCard/ProductCard.tsx";
 import {useNavigate} from "react-router-dom";
-type ProductListProps = {
-    products: Product[]
-}
-export default function AllProducts(props: ProductListProps) {
+export default function AllProducts() {
     const [products, setProducts] = useState<Product[]>([]);
 
     const nav = useNavigate();
@@ -16,7 +13,7 @@ export default function AllProducts(props: ProductListProps) {
             .catch(e => console.log(e))
     }
 
-    function goToNewProduct(){
+    function goToNewProductForm(){
         nav("/newProduct")
     }
     useEffect(() => {
@@ -25,8 +22,8 @@ export default function AllProducts(props: ProductListProps) {
 
     return(
         <>
-            <button onClick={goToNewProduct}>New Product</button>
-            {props.products.map(p =>
+            <button onClick={goToNewProductForm}>New Product</button>
+            {products.map(p =>
                 <ProductCard key={p.id} product={p} />
             )}
         </>
