@@ -27,9 +27,6 @@ public class ProductService {
     public Product addNewProduct(Product product) { return productRepo.save(product); }
 
     public void deleteProduct(String id) { productRepo.deleteById(id); }
-    public Product addNewProduct(Product product) {
-        return productRepo.save(product);
-    }
 
     public Product updateProductById(String id, ProductDto value) {
         Product existing = productRepo.findById(id)
