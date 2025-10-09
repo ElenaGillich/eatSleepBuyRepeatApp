@@ -10,7 +10,18 @@ export default function AllGroceryLists() {
 
     function getAllGroceryLists() {
         axios.get("api/grocery-list")
-            .then((gl) => setGroceryList(gl.data))
+            .then((gl) => {
+                setGroceryList(gl.data)
+            })
+            .catch(e => console.log(e))
+    }
+
+    function handleDelete(id: string) {
+        console.log("Trying to delete ID:", id);
+        axios.delete("api/grocery-list/" + id)
+            .then(() => {
+                setGroceryList(lists => lists.filter((list) => list.id !== id));
+            })
             .catch(e => console.log(e))
     }
 
@@ -28,7 +39,8 @@ export default function AllGroceryLists() {
 
             <h2>Your grocery lists:</h2>
 
-            {groceryList.map(list => (
+            {groceryList.length > 0 ? (
+                groceryList.map(list => (
                 <div key={list.id}>
                     <h3>{list.id} - {list.status}</h3>
                     <ul>
@@ -36,9 +48,12 @@ export default function AllGroceryLists() {
                             <li key={productList.product.name}>{productList.product.name} - {productList.quantity}</li>
                         ))}
                     </ul>
-
+                    <button onClick={() => handleDelete(list.id)}>🗑️ Delete</button>
                 </div>
-            ))}
+            ))) : (
+                <p>No grocery lists found...</p>
+            )
+            }
         </>
     )
 

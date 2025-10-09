@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -36,6 +38,7 @@ class GroceryListControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void getAllGrocery_whenEmpty() throws Exception {
         //GIVEN
 
@@ -46,6 +49,7 @@ class GroceryListControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void getAllGrocery_whenNotEmpty_return200AndExpectedJson() throws Exception {
         //GIVEN
         Product banana = new Product("1", "banana");
@@ -102,6 +106,7 @@ class GroceryListControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void getAll_structureSmokeTest() throws Exception {
         productRepo.save(new Product("1", "Milk"));
         groceryListRepo.save(new GroceryList("1",
@@ -113,6 +118,38 @@ class GroceryListControllerTest {
                 .andExpect(jsonPath("$[0].status").value("OPEN"))
                 .andExpect(jsonPath("$[0].products[0].product.id").value("1"))
                 .andExpect(jsonPath("$[0].products[0].quantity").value(2));
+    }
+
+    @Test
+    @DirtiesContext
+    void deleteGroceryList_wehenInvalid_thenStatus404() throws Exception {
+        //GIVEN
+        //WHEN //THEN
+
+        mockMvc.perform(delete("/api/grocery-list/1"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("List with id: 1 not found!"));
+
+    }
+    @Test
+    @DirtiesContext
+    void deleteGroceryList_shouldReturnStatus204() throws Exception {
+        //GIVEN
+        Product banana = new Product("1", "banana");
+        Product apple = new Product("2", "apple");
+        productRepo.saveAll(List.of(banana, apple));
+
+        GroceryList list1 = new GroceryList(
+                "1",
+                List.of(new ProductListItem(banana, 5)),
+                Status.OPEN
+        );
+        groceryListRepo.save(list1);
+
+        //WHEN //THEN
+        mockMvc.perform(delete("/api/grocery-list/1"))
+                .andExpect(status().isNoContent());
+
     }
 
     @Test
