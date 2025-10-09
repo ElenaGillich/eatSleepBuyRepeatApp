@@ -1,9 +1,6 @@
 package org.example.backend.service;
 
-import org.example.backend.model.GroceryList;
-import org.example.backend.model.Product;
-import org.example.backend.model.ProductListItem;
-import org.example.backend.model.Status;
+import org.example.backend.model.*;
 import org.example.backend.repo.GroceryListRepo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,8 +21,11 @@ class GroceryListServiceTest {
     @Mock
     private GroceryListRepo groceryListRepo = mock(GroceryListRepo.class);
 
+    @Mock
+    private IdService idService = mock(IdService.class);
+
     @InjectMocks
-    private GroceryListService groceryListService = new GroceryListService(groceryListRepo);
+    private GroceryListService groceryListService = new GroceryListService(groceryListRepo, idService);
 
     @Test
     void getAllGroceryLists_shouldReturnAllListsFromRepo() {
@@ -106,5 +106,29 @@ class GroceryListServiceTest {
 
         //THEN
         verify(groceryListRepo).delete(groceryList);
+    }
+    @Test
+    void addGroceryList_shouldAddGroceryListToRepo() {
+        //GIVEN
+        GroceryListDto dto = new GroceryListDto(
+            List.of(
+                    new ProductListItem(new Product("1", "Milk"), 2),
+                    new ProductListItem(new Product("2", "Butter"), 1)
+            ), Status.OPEN
+        );
+        GroceryList expected = new GroceryList(
+                "111",
+                dto.products(),
+                dto.status()
+        );
+        when(idService.randomId()).thenReturn("111");
+        when(groceryListRepo.save(expected)).thenReturn(expected);
+
+        //WHEN
+        GroceryList actual = groceryListService.addGroceryList(dto);
+
+        //THEN
+        verify(groceryListRepo).save(expected);
+        assertEquals(actual, expected);
     }
 }

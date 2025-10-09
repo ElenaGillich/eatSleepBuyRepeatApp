@@ -1,6 +1,7 @@
 package org.example.backend.controller;
 
 import org.example.backend.model.GroceryList;
+import org.example.backend.model.GroceryListDto;
 import org.example.backend.service.GroceryListService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +32,9 @@ public class GroceryListController {
         service.deleteGroceryList(id);
         return ResponseEntity.noContent().build(); //204
     }
-/*
+
     @PostMapping
-    public GroceryList addList(@RequestBody GroceryList list) {
-        return service.addList(list);
-    }*/
+    public GroceryList addGroceryList(@RequestBody GroceryListDto groceryListDto) {
+        return service.addGroceryList(groceryListDto);
+    }
 }
