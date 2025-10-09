@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
@@ -118,6 +119,51 @@ class GroceryListControllerTest {
                 .andExpect(jsonPath("$[0].status").value("OPEN"))
                 .andExpect(jsonPath("$[0].products[0].product.id").value("1"))
                 .andExpect(jsonPath("$[0].products[0].quantity").value(2));
+    }
+
+    @DirtiesContext
+    @Test
+    void getGroceryListById_shouldReturn_CorrectList() throws Exception {
+        Product banana = new Product("001", "Banana");
+        Product apple = new Product("002", "Apple");
+        productRepo.saveAll(List.of(banana, apple));
+
+        GroceryList list1 = new GroceryList(
+                "1",
+                List.of(new ProductListItem(banana, 5)),
+                Status.OPEN
+        );
+        GroceryList list2 = new GroceryList(
+                "2",
+                List.of(new ProductListItem(banana, 2),
+                        new ProductListItem(apple, 1)),
+                Status.DONE
+        );
+        groceryListRepo.saveAll(List.of(list1, list2));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/grocery-list/1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.content().json("""
+                                                                            {
+                                                                              "id": "1",
+                                                                              "products":
+                                                                                  [
+                                                                                      {
+                                                                                        "product": {"id": "001", "name": "Banana"},
+                                                                                        "quantity": 5
+                                                                                      }
+                                                                                  ],
+                                                                                  "status": "OPEN"
+                                                                            }
+                                                                            """));
+    }
+
+    @DirtiesContext
+    @Test
+    void getGroceryListById_whenNotFound_shouldThrowException() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/grocery-list/4"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
