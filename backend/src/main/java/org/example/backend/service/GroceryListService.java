@@ -16,7 +16,6 @@ public class GroceryListService {
     }
 
     public List<GroceryList> getAllGroceryLists() {
-
-        return null;
+        return groceryListRepo.findAll();
     }
 }

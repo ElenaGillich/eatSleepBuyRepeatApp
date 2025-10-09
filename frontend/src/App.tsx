@@ -3,6 +3,7 @@ import {Route, Routes} from "react-router-dom";
 import AllProducts from "./AllProducts.tsx";
 import Navbar from "./Navbar.tsx";
 import NewProduct from "./NewProduct.tsx";
+import AllGroceryLists from "./AllGroceryLists.tsx";
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
             <Routes>
                 <Route path={"/allProducts"} element={<AllProducts/>}/>
                 <Route path={"/newProduct"} element={<NewProduct/>}/>
+                <Route path={"/allGroceryLists"} element={<AllGroceryLists/>}/>
             </Routes>
 
         </>

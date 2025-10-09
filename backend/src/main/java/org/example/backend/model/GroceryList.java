@@ -1,6 +1,7 @@
 package org.example.backend.model;
 
-import java.util.Map;
+import java.util.List;
 
-public record GroceryList(String id, Map<Product, Integer> products, Status status) {
+public record GroceryList(String id, List<ProductListItem> products, Status status) {
+
 }

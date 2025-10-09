@@ -5,6 +5,7 @@ export default function Navbar(){
         <>
             <Link to={"/"}>Home</Link>
             <Link to={"/allProducts"}>All Products</Link>
+            <Link to={"/allGroceryLists"}>All Grocery Lists</Link>
         </>
     )
 }

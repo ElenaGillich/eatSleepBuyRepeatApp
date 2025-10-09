@@ -20,7 +20,8 @@ export default function AllProducts() {
     useEffect(() => {
         getAllProducts()
     }, []);
-    return (
+
+    return(
         <>
             <button onClick={goToNewProduct}>New Product</button>
             {products?.map(p =>
