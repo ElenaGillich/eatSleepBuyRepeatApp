@@ -1,5 +1,6 @@
 package org.example.backend.service;
 
+import org.example.backend.exceptions.EmptyProductNameException;
 import org.example.backend.model.Product;
 import org.example.backend.model.ProductDto;
 import org.example.backend.repo.ProductRepo;
@@ -70,6 +71,7 @@ class ProductServiceTest {
         verify(mockRepo).findById("005");
         verifyNoMoreInteractions(mockRepo);
     }
+
     @Test
     void addNewProduct_shouldReturnListWithProduct_WhenNewProductAdded() {
         //GIVEN
@@ -78,7 +80,7 @@ class ProductServiceTest {
         ProductService service = new ProductService(mockIdService, mockRepo);
 
         Product product = new Product("Test-Id", "productTest1");
-        ProductDto newProduct = new ProductDto( "productTest1");
+        ProductDto newProduct = new ProductDto("productTest1");
 
         //WHEN
         when(mockIdService.generateNewUuid()).thenReturn("Test-Id");
@@ -89,6 +91,43 @@ class ProductServiceTest {
         verify(mockRepo).save(product);
         verify(mockIdService).generateNewUuid();
         assertEquals(product, actual);
+    }
+
+    @Test
+    void addNewProduct_shouldThrowException_WhenEmptyStringIsAdded() {
+        //GIVEN
+        ProductRepo mockRepo = mock(ProductRepo.class);
+        IdService mockIdService = mock(IdService.class);
+        ProductService service = new ProductService(mockIdService, mockRepo);
+
+        ProductDto newProduct = new ProductDto("");
+
+        //THEN
+        assertThrows(EmptyProductNameException.class, () -> {
+            throw new EmptyProductNameException("Empty Strings are not allowed. Please enter a name.");
+        });
+
+        Throwable exception = assertThrows(EmptyProductNameException.class,
+                () -> service.addNewProduct(newProduct));
+        assertEquals("Empty Strings are not allowed. Please enter a name.", exception.getMessage());
+    }
+    @Test
+    void addNewProduct_shouldThrowException_WhenStringWithOnlySpacesIsAdded() {
+        //GIVEN
+        ProductRepo mockRepo = mock(ProductRepo.class);
+        IdService mockIdService = mock(IdService.class);
+        ProductService service = new ProductService(mockIdService, mockRepo);
+
+        ProductDto newProduct = new ProductDto("     ");
+
+        //THEN
+        assertThrows(EmptyProductNameException.class, () -> {
+            throw new EmptyProductNameException("Empty Strings are not allowed. Please enter a name.");
+        });
+
+        Throwable exception = assertThrows(EmptyProductNameException.class,
+                () -> service.addNewProduct(newProduct));
+        assertEquals("Empty Strings are not allowed. Please enter a name.", exception.getMessage());
     }
 
 }
