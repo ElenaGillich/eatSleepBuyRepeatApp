@@ -1,5 +1,7 @@
 package org.example.backend.controller;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.example.backend.model.Product;
 import org.example.backend.model.ProductDto;
 import org.example.backend.repo.ProductRepo;
@@ -12,7 +14,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 
 @SpringBootTest
@@ -34,32 +38,32 @@ class ProductControllerTest {
         ProductDto bananaDto = new ProductDto("Chiquita Banana");
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/products/001")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                            {
-                              "name": "Chiquita Banana"
-                            }
-                        """)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                    {
+                                      "name": "Chiquita Banana"
+                                    }
+                                """)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json("""
-                                                                           {
-                                                                             "id": "001",
-                                                                             "name": "Chiquita Banana"
-                                                                           }
-                                                                           """));
+                        {
+                          "id": "001",
+                          "name": "Chiquita Banana"
+                        }
+                        """));
     }
 
     @DirtiesContext
     @Test
     void updateProductById_shouldThrowException() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/products/005")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                            {
-                              "name": "Pink Lady Apple"
-                            }
-                        """)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                    {
+                                      "name": "Pink Lady Apple"
+                                    }
+                                """)
                 )
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
@@ -77,13 +81,13 @@ class ProductControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(
                         """     
-                        [
-                        {
-                        "id": "1",
-                        "name": "productTest"}
-                        ]
-                        """
-        ));
+                                [
+                                {
+                                "id": "1",
+                                "name": "productTest"}
+                                ]
+                                """
+                ));
     }
 
     @DirtiesContext
@@ -97,9 +101,33 @@ class ProductControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(
                         """     
-                        [
-                        ]
+                                [
+                                ]
+                                """
+                ));
+    }
+
+    @DirtiesContext
+    @Test
+    void addNewProduct_returnProduct_WhenProductAdded() throws Exception {
+        //when
+        mockMvc.perform(post("/api/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
                         """
+                                {
+                                "name": "testProduct"
+                                }
+                                """
+                ))
+                //then
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(
+                        """     
+                                 {
+                                 "name": "testProduct"
+                                 }
+                                """
                 ));
     }
 
