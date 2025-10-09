@@ -1,9 +1,6 @@
 package org.example.backend.controller;
 
-import org.example.backend.model.GroceryList;
-import org.example.backend.model.Product;
-import org.example.backend.model.ProductListItem;
-import org.example.backend.model.Status;
+import org.example.backend.model.*;
 import org.example.backend.repo.GroceryListRepo;
 import org.example.backend.repo.ProductRepo;
 import org.junit.jupiter.api.BeforeEach;
@@ -116,5 +113,39 @@ class GroceryListControllerTest {
                 .andExpect(jsonPath("$[0].status").value("OPEN"))
                 .andExpect(jsonPath("$[0].products[0].product.id").value("1"))
                 .andExpect(jsonPath("$[0].products[0].quantity").value(2));
+    }
+
+    @Test
+    void addGroceryList_shouldReturnNewCreatedGroceryList() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/grocery-list")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                      "id": "new-123",
+                      "products": [
+                          {
+                            "product": {
+                              "id": "3",
+                              "name": "banana"
+                            },
+                            "quantity": 2
+                          },
+                          {
+                            "product": {
+                              "id": "5",
+                              "name": "apples"
+                            },
+                            "quantity": 10
+                          }
+                      ],
+                      "status": "OPEN"
+                    }
+                """))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").exists())
+        .andExpect(jsonPath("$.status").value("OPEN"))
+        .andExpect(jsonPath("$.products[0].product.name").value("banana"))
+        .andExpect(jsonPath("$.products[1].quantity").value(10));
     }
 }

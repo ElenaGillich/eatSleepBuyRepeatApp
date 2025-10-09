@@ -20,6 +20,7 @@
 
         &.amount {
             width: 30px;
+            text-align: center;
         }
 
         &.select {
