@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -102,7 +104,7 @@ class ProductControllerTest {
         productRepo.save(product);
         //when
         mockMvc.perform(
-                delete("/api/products"))
+                        delete("/api/products/123"))
                 //then
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
@@ -115,10 +117,9 @@ class ProductControllerTest {
         productRepo.save(product);
         //when
         mockMvc.perform(
-                delete("/api/products")
-                .content("{\"id\":\"123456789\",\"name\":\"Banana\"}"))
-                //then
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+                delete("/api/products/123456789"))
+                    //then
+                        .andExpect(MockMvcResultMatchers.status().isNotFound());
 
     }
 }

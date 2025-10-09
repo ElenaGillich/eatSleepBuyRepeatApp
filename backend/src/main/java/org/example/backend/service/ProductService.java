@@ -21,9 +21,7 @@ public class ProductService {
 
     public Product getProductById(String id) { return productRepo.getById(id); }
 
-    public Product addNewProduct(Product product) {
-        return productRepo.save(product);
-    }
+    public Product addNewProduct(Product product) { return productRepo.save(product); }
 
-    public void deleteProduct(Product product) { productRepo.deleteById(product.id()); }
+    public void deleteProduct(String id) { productRepo.deleteById(id); }
 }

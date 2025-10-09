@@ -2,6 +2,7 @@ package org.example.backend.controller;
 
 import org.example.backend.model.Product;
 import org.example.backend.service.ProductService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +24,13 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable String id) {
-        return productService.getProductById(id);
+    public ResponseEntity<?> getProductById(@PathVariable String id) {
+        Product product = productService.getProductById(id);
+        if (product != null) {
+            return new ResponseEntity<>(product, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping
@@ -32,10 +38,10 @@ public class ProductController {
         return productService.addNewProduct(product);
     }
 
-    @DeleteMapping
-    public ResponseEntity<String> deleteProduct(@RequestBody Product product){
-        if (productService.getProductById(product.id()).equals(product)) {
-            productService.deleteProduct(product);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable String id){
+        if (productService.getProductById(id) != null) {
+            productService.deleteProduct(id);
             return ResponseEntity.ok("Product deleted");
         } else {
             return ResponseEntity.notFound().build();
