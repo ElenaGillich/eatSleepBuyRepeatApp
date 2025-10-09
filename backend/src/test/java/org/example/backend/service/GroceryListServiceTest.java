@@ -12,6 +12,8 @@ import org.mockito.Mock;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -73,4 +75,36 @@ class GroceryListServiceTest {
         verify(groceryListRepo).findAll();
     }
 
+    @Test
+    void deleteGroceryList_whenNoIdFound() {
+        //GIVEN
+        String id = "10";
+        when(groceryListRepo.existsById(id)).thenReturn(false);
+
+        //WHEN //THEN
+        verify(groceryListRepo, never()).delete(any());
+        assertThrows(NoSuchElementException.class,
+                () -> groceryListService.deleteGroceryList(id));
+    }
+
+    @Test
+    void deleteGroceryList_shouldReturn204_whenFound() {
+        //GIVEN
+        String id = "1";
+        Product banana = new Product("1", "Banana");
+        Product apfel = new Product("2", "Apple");
+        GroceryList groceryList =
+                new GroceryList("1", List.of(
+                        new ProductListItem(banana, 5),
+                        new ProductListItem(apfel, 3)
+                ), Status.OPEN);
+
+        when(groceryListRepo.findById(id)).thenReturn(Optional.of(groceryList));
+
+        //WHEN
+        groceryListService.deleteGroceryList(id);
+
+        //THEN
+        verify(groceryListRepo).delete(groceryList);
+    }
 }
