@@ -81,10 +81,8 @@ class GroceryListServiceTest {
         String id = "10";
         when(groceryListRepo.existsById(id)).thenReturn(false);
 
-        doNothing().when(groceryListRepo).deleteById(id);
-
         //WHEN //THEN
-        verify(groceryListRepo, never()).deleteById(any());
+        verify(groceryListRepo, never()).delete(any());
         assertThrows(NoSuchElementException.class,
                 () -> groceryListService.deleteGroceryList(id));
     }
@@ -103,12 +101,10 @@ class GroceryListServiceTest {
 
         when(groceryListRepo.findById(id)).thenReturn(Optional.of(groceryList));
 
-        doNothing().when(groceryListRepo).deleteById(id);
-
         //WHEN
         groceryListService.deleteGroceryList(id);
 
         //THEN
-        verify(groceryListRepo, never()).deleteById(any());
+        verify(groceryListRepo).delete(groceryList);
     }
 }
