@@ -24,7 +24,7 @@ public class ProductService {
         return productRepo.findAll();
     }
 
-    public Product addNewProduct(Product product) {
+    public Product addNewProduct(ProductDto product) {
         Product newProduct = new Product(idService.generateNewUuid(), product.name());
         return productRepo.save(newProduct);
     }
