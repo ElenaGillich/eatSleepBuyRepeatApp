@@ -5,7 +5,10 @@ export default function Navbar() {
 
     return (
 
-        <header>
+        <header className="header">
+            <div className="logo-container">
+                <img src="/logo.png" alt="Logo" className="logo"/>
+            </div>
             <nav className={"navbar"}>
                 <button className={"nav-button"} onClick={() => nav("/")}>Home</button>
                 <button className={"nav-button"} onClick={() => nav("/allProducts")}>All Products</button>
