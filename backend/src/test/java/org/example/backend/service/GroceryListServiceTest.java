@@ -76,6 +76,33 @@ class GroceryListServiceTest {
     }
 
     @Test
+    void getGroceryListById_shouldReturn_CorrectList() {
+        Product kiwi = new Product("004", "Kiwi");
+        Product grapefruit = new Product("005", "Grapefruit");
+
+        GroceryList groceryList1 =
+                new GroceryList("1", List.of(
+                        new ProductListItem(kiwi, 5),
+                        new ProductListItem(grapefruit, 10)
+                ), Status.OPEN
+                );
+
+        GroceryList groceryList2 =
+                new GroceryList("2", List.of(
+                        new ProductListItem(kiwi, 7),
+                        new ProductListItem(grapefruit, 17)
+                ), Status.OPEN
+                );
+
+        when(groceryListRepo.findById("2")).thenReturn(Optional.of(groceryList2));
+
+        groceryListService.getGroceryListById("2");
+
+        verify(groceryListRepo).findById("2");
+        verifyNoMoreInteractions(groceryListRepo);
+    }
+
+    @Test
     void deleteGroceryList_whenNoIdFound() {
         //GIVEN
         String id = "10";
