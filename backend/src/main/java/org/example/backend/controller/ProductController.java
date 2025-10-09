@@ -1,6 +1,7 @@
 package org.example.backend.controller;
 
 import org.example.backend.model.Product;
+import org.example.backend.model.ProductDto;
 import org.example.backend.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,5 +47,10 @@ public class ProductController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+  
+    @PutMapping("/{id}")
+    public Product updateProductById(@PathVariable String id, @RequestBody ProductDto value) {
+        return productService.updateProductById(id, value);
     }
 }

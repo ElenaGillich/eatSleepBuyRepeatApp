@@ -4,7 +4,7 @@ import axios from "axios";
 import ProductCard from "./ProductCard/ProductCard.tsx";
 import DeleteButton from "./ProductCard/DeleteButton.tsx";
 
-export default function AllProducts(){
+export default function AllProducts() {
     const [products, setProducts] = useState<Product[]>([]);
 
     function getAllProducts() {
@@ -19,6 +19,7 @@ export default function AllProducts(){
     useEffect(() => {
         getAllProducts()
     }, []);
+
     return(
         <>
             {products?.map(p =>
