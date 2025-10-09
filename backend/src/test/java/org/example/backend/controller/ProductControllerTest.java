@@ -1,7 +1,5 @@
 package org.example.backend.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.example.backend.model.Product;
 import org.example.backend.model.ProductDto;
 import org.example.backend.repo.ProductRepo;
