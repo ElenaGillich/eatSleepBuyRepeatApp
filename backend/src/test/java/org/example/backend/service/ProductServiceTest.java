@@ -83,13 +83,13 @@ class ProductServiceTest {
         ProductDto newProduct = new ProductDto("productTest1");
 
         //WHEN
-        when(mockIdService.generateNewUuid()).thenReturn("Test-Id");
+        when(mockIdService.randomId()).thenReturn("Test-Id");
         when(mockRepo.save(product)).thenReturn(product);
         Product actual = service.addNewProduct(newProduct);
 
         //THEN
         verify(mockRepo).save(product);
-        verify(mockIdService).generateNewUuid();
+        verify(mockIdService).randomId();
         assertEquals(product, actual);
     }
 

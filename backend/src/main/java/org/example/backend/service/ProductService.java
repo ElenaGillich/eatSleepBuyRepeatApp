@@ -29,7 +29,7 @@ public class ProductService {
         if (product.name().isBlank()){
             throw new EmptyProductNameException("Empty Strings are not allowed. Please enter a name.");
         }
-        Product newProduct = new Product(idService.generateNewUuid(), product.name());
+        Product newProduct = new Product(idService.randomId(), product.name());
         return productRepo.save(newProduct);
     }
 
