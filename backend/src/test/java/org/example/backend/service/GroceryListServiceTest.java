@@ -103,6 +103,15 @@ class GroceryListServiceTest {
     }
 
     @Test
+    void getGroceryListById_whenIdNotFound_shouldThrowException() {
+        when(groceryListRepo.findById("5")).thenReturn(Optional.empty());
+
+        assertThrows(NoSuchElementException.class, () -> groceryListService.getGroceryListById("5"));
+        verify(groceryListRepo).findById("5");
+        verifyNoMoreInteractions(groceryListRepo);
+    }
+
+    @Test
     void deleteGroceryList_whenNoIdFound() {
         //GIVEN
         String id = "10";
