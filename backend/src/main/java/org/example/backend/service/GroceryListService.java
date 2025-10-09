@@ -23,6 +23,11 @@ public class GroceryListService {
         return groceryListRepo.findAll();
     }
 
+    public GroceryList getGroceryListById(String id) {
+        return groceryListRepo.findById(id).
+                orElseThrow(() -> new NoSuchElementException("List with id: " + id + " not found."));
+    }
+
     public void deleteGroceryList(String id) {
         GroceryList list = groceryListRepo.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("List with id: " + id + " not found!"));
