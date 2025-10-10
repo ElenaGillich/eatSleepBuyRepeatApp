@@ -33,9 +33,7 @@ const DeleteButton: React.FC<Props> = ({ productId, onDelete }) => {
         <button
             onClick={handleDelete}
             className="delete-button"
-        >
-            x
-        </button>
+        >x</button>
     );
 };
 
