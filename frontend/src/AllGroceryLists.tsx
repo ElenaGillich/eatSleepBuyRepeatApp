@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import type {GroceryList} from "./model/GroceryList.tsx";
 import {useNavigate} from "react-router-dom";
+import './AllGroceryLists.css';
 
 export default function AllGroceryLists() {
 
@@ -59,29 +60,33 @@ export default function AllGroceryLists() {
                 <button onClick={handleIdSearch}>Search</button>
             </div>
 
-            <div className={"add-grocery"}>
-                <button onClick={() => nav("/addGroceryList")}>
-                    Add new grocery list
-                </button>
-            </div>
-
-            <h2>Your grocery lists:</h2>
-
-            {groceryList.length > 0 ? (
-                groceryList.map(list => (
-                <div key={list.id}>
-                    <h3>{list.id} - {list.status}</h3>
-                    <ul>
-                        {list.products.map(productList => (
-                            <li key={productList.product.name}>{productList.product.name} - {productList.quantity}</li>
-                        ))}
-                    </ul>
-                    <button onClick={() => handleDelete(list.id)}>🗑️ Delete</button>
+            <div className={"main-page-for-all-lists"}>
+                <div className={"add-grocery"}>
+                    <button onClick={() => nav("/addGroceryList")}>
+                        Add new grocery list
+                    </button>
                 </div>
-            ))) : (
-                <p>No grocery lists found...</p>
-            )
-            }
+
+                <h2>Your grocery lists:</h2>
+                <div className={"cards-columns"}>
+                    {groceryList.length > 0 ? (
+                        groceryList.map(list => (
+                            <div key={list.id} className={"grocery-list-card"}>
+                                <h3 className={"grocery-list-card-text"}>{list.id} - {list.status}</h3>
+                                <ul className={"grocery-list-card-inner"}>
+                                    {list.products.map(productList => (
+                                        <div key={productList.product.name}
+                                             className={"grocery-list-card-inner-elements"}>{productList.product.name} - {productList.quantity}</div>
+                                    ))}
+                                </ul>
+                                <button className={"grocery-list-card-button"} onClick={() => handleDelete(list.id)}>🗑️ Delete</button>
+                            </div>
+                        ))) : (
+                        <p>No grocery lists found...</p>
+                    )
+                    }
+                </div>
+            </div>
         </>
     )
 
