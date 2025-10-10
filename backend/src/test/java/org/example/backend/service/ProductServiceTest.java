@@ -41,9 +41,10 @@ class ProductServiceTest {
         ProductRepo mockRepo = mock(ProductRepo.class);
         ProductService productService = new ProductService(mockRepo);
         Product expected = new Product("1", "productTest1");
-        Product actual = productService.getProductById("1");
-
         when(mockRepo.findById("1")).thenReturn(Optional.of(expected));
+
+        //when
+        Product actual = productService.getProductById("1");
 
         //then
         assertEquals(expected, actual);
