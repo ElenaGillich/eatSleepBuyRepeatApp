@@ -12,9 +12,9 @@
     margin: 20px;
     padding: 1px 20px 15px 25px;
     background: linear-gradient(
-            35deg,
-            rgba(82, 75, 149, 0.72),
-            rgba(161, 157, 243, 0.78)
+            45deg,
+            rgba(52, 152, 219, 0.72),
+            rgba(155, 89, 182, 0.8)
     );
     backdrop-filter: blur(8px);
     transition: transform 0.5s ease, box-shadow 0.3s ease;
