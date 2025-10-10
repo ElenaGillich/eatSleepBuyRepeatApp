@@ -1,6 +1,6 @@
 package org.example.backend.service;
 
-import org.example.backend.exceptions.EmptyProductNameException;
+import org.example.backend.exception.EmptyProductNameException;
 import org.example.backend.model.Product;
 import org.example.backend.model.ProductDto;
 import org.example.backend.repo.ProductRepo;
