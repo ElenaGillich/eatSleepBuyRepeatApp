@@ -48,8 +48,6 @@ class ProductServiceTest {
     @Test
     void getProductById_returnsProduct_whenCalledWithValidID() {
         //given
-        ProductRepo mockRepo = mock(ProductRepo.class);
-        ProductService productService = new ProductService(mockRepo);
         Product expected = new Product("1", "productTest1");
         when(mockRepo.findById("1")).thenReturn(Optional.of(expected));
 
@@ -63,8 +61,6 @@ class ProductServiceTest {
     @Test
     void getProductById_throwsException_whenCalledWithInvalidID() {
         //given
-        ProductRepo mockRepo = mock(ProductRepo.class);
-        ProductService productService = new ProductService(mockRepo);
         String id = "kfjghlföhgldfshgödfl";
         Product expected = new Product(id, "productTest1");
 
