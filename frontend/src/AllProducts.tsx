@@ -3,6 +3,7 @@ import type {Product} from "./model/Product.tsx";
 import axios from "axios";
 import ProductCard from "./ProductCard/ProductCard.tsx";
 import {useNavigate} from "react-router-dom";
+
 export default function AllProducts() {
     const [products, setProducts] = useState<Product[]>([]);
 
@@ -11,6 +12,10 @@ export default function AllProducts() {
     function getAllProducts() {
         axios.get('api/products').then(p => setProducts(p.data))
             .catch(e => console.log(e))
+    }
+
+    const handleDeleteFromList = (deletedId: string) => {
+        setProducts(prevProducts => prevProducts.filter(p => p.id !== deletedId));
     }
 
     function goToNewProductForm(){
@@ -24,7 +29,7 @@ export default function AllProducts() {
         <>
             <button onClick={goToNewProductForm}>New Product</button>
             {products.map(p =>
-                <ProductCard key={p.id} product={p} />
+                <ProductCard key={p.id} product={p} handleDeleteFromList={handleDeleteFromList} />
             )}
         </>
     )

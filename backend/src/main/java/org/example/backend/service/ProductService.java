@@ -33,6 +33,13 @@ public class ProductService {
         return productRepo.save(newProduct);
     }
 
+    public Product getProductById(String id) {
+        return productRepo.findById(id)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product with id " + id + " not found"));
+    }
+
+    public void deleteProduct(String id) { productRepo.deleteById(id); }
+
     public Product updateProductById(String id, ProductDto value) {
         Product existing = productRepo.findById(id)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product with id " + id + " not found"));
