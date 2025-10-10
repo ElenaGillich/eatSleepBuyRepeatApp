@@ -26,12 +26,14 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(@PathVariable String id) {
+        ResponseEntity<Product> response;
         Product product = productService.getProductById(id);
         if (product != null) {
-            return new ResponseEntity<>(product, HttpStatus.OK);
+            response = new ResponseEntity<>(product, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return response;
     }
 
     @PostMapping
@@ -41,12 +43,14 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable String id){
+        ResponseEntity<String> response;
         if (productService.getProductById(id) != null) {
             productService.deleteProduct(id);
-            return ResponseEntity.ok("Product deleted");
+            response = ResponseEntity.ok("Product deleted");
         } else {
-            return ResponseEntity.notFound().build();
+            response = ResponseEntity.notFound().build();
         }
+        return response;
     }
   
     @PutMapping("/{id}")
