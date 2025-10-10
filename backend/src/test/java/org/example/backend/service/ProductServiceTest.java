@@ -73,7 +73,7 @@ class ProductServiceTest {
     }
 
     @Test
-    void addNewProduct_shouldReturnListWithProduct_WhenNewProductAdded() {
+    void addNewProduct_shouldReturnProduct_WhenNewProductAdded() {
         //GIVEN
         ProductRepo mockRepo = mock(ProductRepo.class);
         IdService mockIdService = mock(IdService.class);
