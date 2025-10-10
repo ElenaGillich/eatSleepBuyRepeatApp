@@ -36,13 +36,26 @@ class ProductServiceTest {
     }
 
     @Test
-    void getProductById_returnsProduct_whenCalled() {
-        assertTrue(true);
+    void getProductById_returnsProduct_whenCalledWithValidID() {
+        ProductRepo mockRepo = mock(ProductRepo.class);
+        ProductService productService = new ProductService(mockRepo);
+        Product expected = new Product("1", "productTest1");
+
+        when(mockRepo.findById("1")).thenReturn(Optional.of(expected));
+        Product actual = productService.getProductById("1");
+        assertEquals(expected, actual);
     }
 
     @Test
-    void deleteProduct() {
-        assertTrue(true);
+    void getProductById_throwsException_whenCalledWithInvalidID() {
+        ProductRepo mockRepo = mock(ProductRepo.class);
+        ProductService productService = new ProductService(mockRepo);
+        String id = "kfjghlföhgldfshgödfl";
+        Product expected = new Product(id, "productTest1");
+
+        when(mockRepo.findById("1")).thenReturn(Optional.of(expected));
+
+        assertThrows(ResponseStatusException.class, ()->productService.getProductById("111"));
     }
   
     @Test

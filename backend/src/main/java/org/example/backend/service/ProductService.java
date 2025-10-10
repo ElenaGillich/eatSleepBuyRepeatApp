@@ -22,7 +22,10 @@ public class ProductService {
         return productRepo.findAll();
     }
 
-    public Product getProductById(String id) { return productRepo.getById(id); }
+    public Product getProductById(String id) {
+        return productRepo.findById(id)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product with id " + id + " not found"));
+    }
 
     public Product addNewProduct(Product product) { return productRepo.save(product); }
 
