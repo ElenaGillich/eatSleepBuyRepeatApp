@@ -28,7 +28,7 @@ export default function ProductCard(props: Readonly<ProductCardProps>){
                 <h3>ID: {props.product.id}</h3>
                 {!isEditing && <button onClick={() =>setIsEditing(!isEditing)}> ✎Edit</button>}
                 {isEditing && <button onClick={() => {updateProduct(); setIsEditing(!isEditing) }}>Save</button>}
-                <DeleteButton productId={props.product.id} onDelete={props.handleDeleteFromList}/>
+                {!isEditing && <DeleteButton productId={props.product.id} onDelete={props.handleDeleteFromList}/>}
             </div>
     )
 }
