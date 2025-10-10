@@ -1,5 +1,6 @@
 package org.example.backend.service;
 
+import org.example.backend.exception.EmptyProductNameException;
 import org.example.backend.model.Product;
 import org.example.backend.model.ProductDto;
 import org.example.backend.repo.ProductRepo;
@@ -12,9 +13,11 @@ import java.util.List;
 @Service
 public class ProductService {
 
+    private final IdService idService;
     private final ProductRepo productRepo;
 
-    public ProductService(ProductRepo productRepo) {
+    public ProductService(IdService idService, ProductRepo productRepo) {
+        this.idService = idService;
         this.productRepo = productRepo;
     }
 
@@ -22,8 +25,12 @@ public class ProductService {
         return productRepo.findAll();
     }
 
-    public Product addNewProduct(Product product) {
-        return productRepo.save(product);
+    public Product addNewProduct(ProductDto product) {
+        if (product.name().isBlank()){
+            throw new EmptyProductNameException("Empty Strings are not allowed. Please enter a name.");
+        }
+        Product newProduct = new Product(idService.randomId(), product.name());
+        return productRepo.save(newProduct);
     }
 
     public Product updateProductById(String id, ProductDto value) {

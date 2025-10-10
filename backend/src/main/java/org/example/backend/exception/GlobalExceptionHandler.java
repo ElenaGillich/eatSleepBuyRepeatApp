@@ -15,4 +15,10 @@ public class GlobalExceptionHandler extends RuntimeException {
     public String handlerNoSuchElementException(NoSuchElementException e) {
         return e.getMessage();
     }
+
+    @ExceptionHandler(EmptyProductNameException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleEmptyProductNameException (EmptyProductNameException e){
+      return e.getMessage();
+    }
 }

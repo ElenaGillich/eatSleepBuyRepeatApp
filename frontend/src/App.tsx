@@ -2,6 +2,7 @@ import './App.css'
 import {Route, Routes} from "react-router-dom";
 import AllProducts from "./AllProducts.tsx";
 import Navbar from "./Navbar.tsx";
+import NewProduct from "./NewProduct.tsx";
 import {useEffect, useState} from "react";
 import type {Product} from "./model/Product.tsx";
 import axios from "axios";
@@ -24,7 +25,8 @@ function App() {
         <>
             <Navbar/>
             <Routes>
-                <Route path={"/allProducts"} element={<AllProducts products={products}/>}/>
+                <Route path={"/newProduct"} element={<NewProduct/>}/>
+                <Route path={"/allProducts"} element={<AllProducts/>}/>
                 <Route path={"/allGroceryLists"} element={<AllGroceryLists/>}/>
                 <Route path={"/addGroceryList"} element={<CreateNewList products={products}/>}/>
             </Routes>
