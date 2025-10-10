@@ -1,9 +1,6 @@
 package org.example.backend.controller;
 
-import org.example.backend.model.GroceryList;
-import org.example.backend.model.Product;
-import org.example.backend.model.ProductListItem;
-import org.example.backend.model.Status;
+import org.example.backend.model.*;
 import org.example.backend.repo.GroceryListRepo;
 import org.example.backend.repo.ProductRepo;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
@@ -123,6 +121,51 @@ class GroceryListControllerTest {
                 .andExpect(jsonPath("$[0].products[0].quantity").value(2));
     }
 
+    @DirtiesContext
+    @Test
+    void getGroceryListById_shouldReturn_CorrectList() throws Exception {
+        Product banana = new Product("001", "Banana");
+        Product apple = new Product("002", "Apple");
+        productRepo.saveAll(List.of(banana, apple));
+
+        GroceryList list1 = new GroceryList(
+                "1",
+                List.of(new ProductListItem(banana, 5)),
+                Status.OPEN
+        );
+        GroceryList list2 = new GroceryList(
+                "2",
+                List.of(new ProductListItem(banana, 2),
+                        new ProductListItem(apple, 1)),
+                Status.DONE
+        );
+        groceryListRepo.saveAll(List.of(list1, list2));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/grocery-list/1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.content().json("""
+                                                                            {
+                                                                              "id": "1",
+                                                                              "products":
+                                                                                  [
+                                                                                      {
+                                                                                        "product": {"id": "001", "name": "Banana"},
+                                                                                        "quantity": 5
+                                                                                      }
+                                                                                  ],
+                                                                                  "status": "OPEN"
+                                                                            }
+                                                                            """));
+    }
+
+    @DirtiesContext
+    @Test
+    void getGroceryListById_whenNotFound_shouldThrowException() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/grocery-list/4"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
     @Test
     @DirtiesContext
     void deleteGroceryList_wehenInvalid_thenStatus404() throws Exception {
@@ -153,5 +196,39 @@ class GroceryListControllerTest {
         mockMvc.perform(delete("/api/grocery-list/1"))
                 .andExpect(status().isNoContent());
 
+    }
+
+    @Test
+    void addGroceryList_shouldReturnNewCreatedGroceryList() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/grocery-list")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                      "id": "new-123",
+                      "products": [
+                          {
+                            "product": {
+                              "id": "3",
+                              "name": "banana"
+                            },
+                            "quantity": 2
+                          },
+                          {
+                            "product": {
+                              "id": "5",
+                              "name": "apples"
+                            },
+                            "quantity": 10
+                          }
+                      ],
+                      "status": "OPEN"
+                    }
+                """))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").exists())
+        .andExpect(jsonPath("$.status").value("OPEN"))
+        .andExpect(jsonPath("$.products[0].product.name").value("banana"))
+        .andExpect(jsonPath("$.products[1].quantity").value(10));
     }
 }

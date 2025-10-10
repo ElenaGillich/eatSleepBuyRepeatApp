@@ -3,7 +3,11 @@ import type {Product} from "./model/Product.tsx";
 import axios from "axios";
 import ProductCard from "./ProductCard/ProductCard.tsx";
 
-export default function AllProducts() {
+type ProductListProps = {
+    products: Product[]
+}
+
+export default function AllProducts(props: ProductListProps) {
     const [products, setProducts] = useState<Product[]>([]);
 
     function getAllProducts() {

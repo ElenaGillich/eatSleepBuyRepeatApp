@@ -1,9 +1,6 @@
 package org.example.backend.service;
 
-import org.example.backend.model.GroceryList;
-import org.example.backend.model.Product;
-import org.example.backend.model.ProductListItem;
-import org.example.backend.model.Status;
+import org.example.backend.model.*;
 import org.example.backend.repo.GroceryListRepo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,8 +21,11 @@ class GroceryListServiceTest {
     @Mock
     private GroceryListRepo groceryListRepo = mock(GroceryListRepo.class);
 
+    @Mock
+    private IdService idService = mock(IdService.class);
+
     @InjectMocks
-    private GroceryListService groceryListService = new GroceryListService(groceryListRepo);
+    private GroceryListService groceryListService = new GroceryListService(groceryListRepo, idService);
 
     @Test
     void getAllGroceryLists_shouldReturnAllListsFromRepo() {
@@ -76,6 +76,42 @@ class GroceryListServiceTest {
     }
 
     @Test
+    void getGroceryListById_shouldReturn_CorrectList() {
+        Product kiwi = new Product("004", "Kiwi");
+        Product grapefruit = new Product("005", "Grapefruit");
+
+        GroceryList groceryList1 =
+                new GroceryList("1", List.of(
+                        new ProductListItem(kiwi, 5),
+                        new ProductListItem(grapefruit, 10)
+                ), Status.OPEN
+                );
+
+        GroceryList groceryList2 =
+                new GroceryList("2", List.of(
+                        new ProductListItem(kiwi, 7),
+                        new ProductListItem(grapefruit, 17)
+                ), Status.OPEN
+                );
+
+        when(groceryListRepo.findById("2")).thenReturn(Optional.of(groceryList2));
+
+        groceryListService.getGroceryListById("2");
+
+        verify(groceryListRepo).findById("2");
+        verifyNoMoreInteractions(groceryListRepo);
+    }
+
+    @Test
+    void getGroceryListById_whenIdNotFound_shouldThrowException() {
+        when(groceryListRepo.findById("5")).thenReturn(Optional.empty());
+
+        assertThrows(NoSuchElementException.class, () -> groceryListService.getGroceryListById("5"));
+        verify(groceryListRepo).findById("5");
+        verifyNoMoreInteractions(groceryListRepo);
+    }
+
+    @Test
     void deleteGroceryList_whenNoIdFound() {
         //GIVEN
         String id = "10";
@@ -106,5 +142,29 @@ class GroceryListServiceTest {
 
         //THEN
         verify(groceryListRepo).delete(groceryList);
+    }
+    @Test
+    void addGroceryList_shouldAddGroceryListToRepo() {
+        //GIVEN
+        GroceryListDto dto = new GroceryListDto(
+            List.of(
+                    new ProductListItem(new Product("1", "Milk"), 2),
+                    new ProductListItem(new Product("2", "Butter"), 1)
+            ), Status.OPEN
+        );
+        GroceryList expected = new GroceryList(
+                "111",
+                dto.products(),
+                dto.status()
+        );
+        when(idService.randomId()).thenReturn("111");
+        when(groceryListRepo.save(expected)).thenReturn(expected);
+
+        //WHEN
+        GroceryList actual = groceryListService.addGroceryList(dto);
+
+        //THEN
+        verify(groceryListRepo).save(expected);
+        assertEquals(actual, expected);
     }
 }
