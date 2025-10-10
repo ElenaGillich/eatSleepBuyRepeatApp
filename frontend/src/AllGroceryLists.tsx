@@ -8,6 +8,8 @@ export default function AllGroceryLists() {
     const [groceryList, setGroceryList] = useState<GroceryList[]>([]);
     const nav = useNavigate();
 
+    const [searchId, setSearchId] = useState<string>("");
+
     function getAllGroceryLists() {
         axios.get("api/grocery-list")
             .then((gl) => {
@@ -29,8 +31,34 @@ export default function AllGroceryLists() {
         getAllGroceryLists()
     }, []);
 
+    function handleIdSearch() {
+        if (!searchId.trim()) {
+            return getAllGroceryLists();
+        }
+        axios
+            .get(`/api/grocery-list/${searchId}`)
+            .then((res) => setGroceryList([res.data]))
+            .catch((err) => {
+                console.error("List of this ID not found", err, searchId);
+                alert("List of this ID not found");
+            });
+    }
+
     return (
         <>
+            <div>
+                <label> Search by ID:
+                    <input type={"text"} placeholder={"Enter ID here"} value={searchId}
+                           onChange={(e) => {
+                               setSearchId(e.target.value);
+                               if (!e.target.value) {
+                                   return getAllGroceryLists();
+                               }
+                           }}/>
+                </label>
+                <button onClick={handleIdSearch}>Search</button>
+            </div>
+
             <div className={"add-grocery"}>
                 <button onClick={() => nav("/addGroceryList")}>
                     Add new grocery list
