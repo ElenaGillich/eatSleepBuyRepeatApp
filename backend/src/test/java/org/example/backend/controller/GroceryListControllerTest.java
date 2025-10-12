@@ -232,8 +232,92 @@ class GroceryListControllerTest {
                 """))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").exists())
+        .andExpect(jsonPath("$.title").isEmpty())
         .andExpect(jsonPath("$.status").value("OPEN"))
         .andExpect(jsonPath("$.products[0].product.name").value("banana"))
         .andExpect(jsonPath("$.products[1].quantity").value(10));
+    }
+
+    @Test
+    void addGroceryList_shouldReturnNewGroceryListWithTitle_whenCalledWithTitle() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/grocery-list")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                      "id": "new-123",
+                      "title": "fruit shopping list",
+                      "products": [
+                          {
+                            "product": {
+                              "id": "3",
+                              "name": "banana"
+                            },
+                            "quantity": 2
+                          },
+                          {
+                            "product": {
+                              "id": "5",
+                              "name": "apples"
+                            },
+                            "quantity": 10
+                          }
+                      ],
+                      "status": "OPEN"
+                    }
+                """))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.title").isNotEmpty())
+        .andExpect(jsonPath("$.title").value("fruit shopping list"));
+    }
+
+    @Test
+    void addGroceryList_shouldReturnNewGroceryListWithEmptyTitle_whenCalledOnlyWithSpaces() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/grocery-list")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                      "id": "new-123",
+                      "title": "   ",
+                      "products": [
+                          {
+                            "product": {
+                              "id": "3",
+                              "name": "banana"
+                            },
+                            "quantity": 2
+                          }
+                      ],
+                      "status": "OPEN"
+                    }
+                """))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.title").isEmpty());
+    }
+
+    @Test
+    void addGroceryList_shouldReturnNewGroceryListWithEmptyTitle_whenCalledWithNullTitle() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/grocery-list")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                    {
+                      "id": "new-123",
+                      "title": null,
+                      "products": [
+                          {
+                            "product": {
+                              "id": "3",
+                              "name": "banana"
+                            },
+                            "quantity": 2
+                          }
+                      ],
+                      "status": "OPEN"
+                    }
+                """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").isEmpty());
     }
 }
