@@ -72,7 +72,7 @@ export default function AllGroceryLists() {
                     {groceryList.length > 0 ? (
                         groceryList.map(list => (
                             <div key={list.id} className={"grocery-list-card"}>
-                                <h3 className={"grocery-list-card-text"}>{list.title}</h3>
+                                <h3>{list.title}</h3>
                                 <h3 className={"grocery-list-card-text"}>{list.id} - {list.status}</h3>
                                 <ul className={"grocery-list-card-inner"}>
                                     {list.products.map(productList => (

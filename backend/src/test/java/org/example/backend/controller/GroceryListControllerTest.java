@@ -59,12 +59,14 @@ class GroceryListControllerTest {
 
         GroceryList list1 = new GroceryList(
                 "1",
+                "Title A",
                 List.of(new ProductListItem(banana, 5)),
                 Status.OPEN
         );
 
         GroceryList list2 = new GroceryList(
                 "2",
+                "Title B",
                 List.of(new ProductListItem(banana, 2),
                         new ProductListItem(apple, 1)),
                 Status.DONE
@@ -110,7 +112,7 @@ class GroceryListControllerTest {
     @DirtiesContext
     void getAll_structureSmokeTest() throws Exception {
         productRepo.save(new Product("1", "Milk"));
-        groceryListRepo.save(new GroceryList("1",
+        groceryListRepo.save(new GroceryList("1", "Title A",
                 List.of(new ProductListItem(new Product("1","Milk"), 2)), Status.OPEN));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/grocery-list"))
@@ -130,11 +132,13 @@ class GroceryListControllerTest {
 
         GroceryList list1 = new GroceryList(
                 "1",
+                "Title A",
                 List.of(new ProductListItem(banana, 5)),
                 Status.OPEN
         );
         GroceryList list2 = new GroceryList(
                 "2",
+                "Title B",
                 List.of(new ProductListItem(banana, 2),
                         new ProductListItem(apple, 1)),
                 Status.DONE
@@ -187,6 +191,7 @@ class GroceryListControllerTest {
 
         GroceryList list1 = new GroceryList(
                 "1",
+                "Title A",
                 List.of(new ProductListItem(banana, 5)),
                 Status.OPEN
         );

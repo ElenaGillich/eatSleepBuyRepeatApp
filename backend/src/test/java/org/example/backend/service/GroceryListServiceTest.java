@@ -33,10 +33,10 @@ class GroceryListServiceTest {
         Product banana = new Product("1", "Banana");
         Product apfel = new Product("2", "Apple");
         List<GroceryList> groceryLists = List.of(
-                new GroceryList("1", List.of(
+                new GroceryList("1", "Title A", List.of(
                         new ProductListItem(banana, 5)
                 ), Status.OPEN),
-                new GroceryList("2", List.of(
+                new GroceryList("2", "Title B", List.of(
                         new ProductListItem(banana, 2),
                         new ProductListItem(apfel, 1)
                 ), Status.DONE)
@@ -81,14 +81,14 @@ class GroceryListServiceTest {
         Product grapefruit = new Product("005", "Grapefruit");
 
         GroceryList groceryList1 =
-                new GroceryList("1", List.of(
+                new GroceryList("1", "Title A", List.of(
                         new ProductListItem(kiwi, 5),
                         new ProductListItem(grapefruit, 10)
                 ), Status.OPEN
                 );
 
         GroceryList groceryList2 =
-                new GroceryList("2", List.of(
+                new GroceryList("2", "Title B", List.of(
                         new ProductListItem(kiwi, 7),
                         new ProductListItem(grapefruit, 17)
                 ), Status.OPEN
@@ -130,7 +130,7 @@ class GroceryListServiceTest {
         Product banana = new Product("1", "Banana");
         Product apfel = new Product("2", "Apple");
         GroceryList groceryList =
-                new GroceryList("1", List.of(
+                new GroceryList("1", "Title A", List.of(
                         new ProductListItem(banana, 5),
                         new ProductListItem(apfel, 3)
                 ), Status.OPEN);
@@ -146,7 +146,7 @@ class GroceryListServiceTest {
     @Test
     void addGroceryList_shouldAddGroceryListToRepo() {
         //GIVEN
-        GroceryListDto dto = new GroceryListDto(
+        GroceryListDto dto = new GroceryListDto("Title A",
             List.of(
                     new ProductListItem(new Product("1", "Milk"), 2),
                     new ProductListItem(new Product("2", "Butter"), 1)
@@ -154,6 +154,7 @@ class GroceryListServiceTest {
         );
         GroceryList expected = new GroceryList(
                 "111",
+                "Title A",
                 dto.products(),
                 dto.status()
         );
