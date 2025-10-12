@@ -35,6 +35,20 @@
 }
 
 .product-list {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f9f9f9;
+
+    li {
+        width: 100%;
+        display: flex;
+
+        .list-item {
+            width: 90%;
+            margin: 6px;
+            text-align: left;
+        }
+    }
 }
 
 .add-grocery {
@@ -46,4 +60,15 @@ label {
     width: 150px;
     text-align: right;
     color: gray;
+}
+
+.x-button {
+    width: 20px;
+    height: 20px;
+    border-radius: 30px;
+    color: red;
+    padding: 0 0 2px;
+    margin-top: 8px;
+    font-weight: bold;
+    font-size: 10px;
 }
