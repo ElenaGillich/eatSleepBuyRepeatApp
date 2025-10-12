@@ -13,12 +13,14 @@ export default function CreateNewList(props: NewGroceryListProps) {
     const availableProducts: Product[] = props.products ?? [];
 
     const nav = useNavigate();
+    const [title, setTitle] = useState<string>("")
     const [groceryName, setGroceryName] = useState<string>("")
     const [quantity, setQuantity] = useState<number>(1)
     const [groceryListItems, setGroceryListItems] = useState<GroceryListItem[]>([])
 
     function save() {
         axios.post("api/grocery-list", {
+            title: title,
             products: groceryListItems,
             status: "OPEN"
         })
@@ -50,7 +52,16 @@ export default function CreateNewList(props: NewGroceryListProps) {
         <div>
             <h2>New grocery list</h2>
             <form className={"form"}>
-                <p>You can choose from the list or add a product in the input field.</p>
+                <div className={"display-flex"}>
+                    <label>Name: </label>
+                    <input
+                        className={"form-field"}
+                        placeholder={"Enter the name of your grocery list here..."}
+                        onChange={(event) => setTitle(event.target.value)}
+                    />
+                </div>
+
+                <h4>You can choose a product from the list or add it in the input field.</h4>
 
                 <div className={"display-flex"}>
                     <label>Available products</label>
