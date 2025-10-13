@@ -38,7 +38,11 @@ public class ProductService {
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product with id " + id + " not found"));
     }
 
-    public void deleteProduct(String id) { productRepo.deleteById(id); }
+    public void deleteProduct(String id) {
+        Product existing = productRepo.findById(id)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product with id " + id + " not found"));
+        productRepo.deleteById(existing.id());
+    }
 
     public Product updateProductById(String id, ProductDto value) {
         Product existing = productRepo.findById(id)
