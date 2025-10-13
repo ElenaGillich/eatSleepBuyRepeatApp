@@ -8,6 +8,7 @@ import type {Product} from "./model/Product.tsx";
 import axios from "axios";
 import AllGroceryLists from "./AllGroceryLists.tsx";
 import CreateNewList from "./NewGroceryList/NewGroceryList.tsx";
+import Login from "./Login.tsx";
 
 function App() {
     const [products, setProducts] = useState<Product[]>([]);
@@ -25,9 +26,10 @@ function App() {
         <>
             <Navbar/>
             <Routes>
+                <Route path={"/"} element={<Login/>}/>
                 <Route path={"/newProduct"} element={<NewProduct/>}/>
                 <Route path={"/allProducts"} element={<AllProducts/>}/>
-                <Route path={"/allGroceryLists"} element={<AllGroceryLists/>}/>
+                <Route path={"/home"} element={<AllGroceryLists/>}/>
                 <Route path={"/addGroceryList"} element={<CreateNewList products={products}/>}/>
             </Routes>
 

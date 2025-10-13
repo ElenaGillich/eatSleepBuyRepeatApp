@@ -9,9 +9,8 @@ export default function Navbar() {
                 <img src="/logo.png" alt="Logo" className="logo"/>
             </div>
             <nav className={"navbar"}>
-                <Link className={"nav-button"} to={"/"}>Home</Link>
+                <Link className={"nav-button"} to={"/home"}>Home</Link>
                 <Link className={"nav-button"} to={"/allProducts"}>All Products</Link>
-                <Link className={"nav-button"} to={"/allGroceryLists"}>All Grocery Lists</Link>
             </nav>
         </header>
     )
