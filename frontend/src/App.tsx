@@ -1,4 +1,5 @@
 import './App.css'
+import './index.css'
 import {Route, Routes} from "react-router-dom";
 import AllProducts from "./AllProducts.tsx";
 import Navbar from "./Navbar.tsx";
@@ -23,6 +24,13 @@ function App() {
 
     return (
         <>
+            <div className="area" aria-hidden="true">
+                <ul className="circles">
+                    <li /><li /><li /><li /><li />
+                    <li /><li /><li /><li /><li />
+                </ul>
+            </div>
+
             <Navbar/>
             <Routes>
                 <Route path={"/newProduct"} element={<NewProduct/>}/>

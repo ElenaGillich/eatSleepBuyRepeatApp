@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Exo:400,700');
+
 :root {
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
@@ -9,6 +11,7 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    --vh: 100vh;
 }
 
 a {
@@ -22,7 +25,7 @@ a:hover {
 }
 
 body {
-    margin: 40px 20px;
+    margin: 60px 20px;
     display: flex;
     place-items: center;
     min-width: 320px;
@@ -58,15 +61,40 @@ button:focus-visible {
 @media (prefers-color-scheme: light) {
     :root {
         color: #213547;
-        background-color: #ffffff;
+        /*background-color: #ffffff;*/
+        /*background-color: #F0F1FA;*/
+        background: rgba(169, 173, 241, 0.37);
+        background: linear-gradient(to left, rgba(143, 148, 251, 0.57), rgba(173, 175, 243, 0.23));
     }
+
     a:hover {
         color: rgba(116, 123, 255, 0.35); /*was color: #747bff;*/
     }
+
     button {
         background-color: #f9f9f9;
     }
 }
+
+:root {
+    --vh: 100vh;
+    --bleed: 220px;
+}
+
+@supports (height: 100svh) {
+    :root {
+        --vh: 100svh;
+    }
+}
+
+/* small viewport */
+@supports (height: 100dvh) {
+    :root {
+        --vh: 100dvh;
+    }
+}
+
+/* dynamic viewport */
 
 header {
     position: fixed;
@@ -74,7 +102,7 @@ header {
     left: 0;
     width: 100%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    background-color: rgba(10, 10, 71, 0.47);
+    background-color: rgba(10, 10, 71, 0.35);
     padding: 15px;
     z-index: 1000;
     display: flex;
@@ -130,4 +158,135 @@ header {
     width: auto;
     padding: 4px;
     object-fit: contain;
+}
+
+/* Фон позаду */
+.area {
+    position: fixed;
+    inset: calc(-1 * var(--bleed));
+    height: calc(var(--vh) + var(--bleed) * 2);
+    z-index: 0;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.circles {
+    position: absolute;
+    inset: 0;
+    overflow: visible;
+}
+
+.circles li {
+    position: absolute;
+    list-style: none;
+    display: block;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.38);
+    bottom: calc(-1 * var(--bleed));
+    border-radius: 10px;
+    --d: 25s;
+    --delay: -0s;
+    animation: rise var(--d,25s) linear infinite;
+    animation-delay: var(--delay);
+    will-change: transform, opacity;
+}
+
+
+.circles li:nth-child(1) {
+    left: 25%;
+    width: 80px;
+    height: 80px;
+    --d: 20s;
+    --delay: -5s;
+}
+
+.circles li:nth-child(2) {
+    left: 10%;
+    width: 20px;
+    height: 20px;
+    --d: 12s;
+    --delay: -3s;
+}
+
+.circles li:nth-child(3) {
+    left: 70%;
+    width: 20px;
+    height: 20px;
+    --d: 18s;
+    --delay: -9s;
+}
+
+.circles li:nth-child(4) {
+    left: 40%;
+    width: 60px;
+    height: 60px;
+    --d: 16s;
+    --delay: -2s;
+}
+
+.circles li:nth-child(5) {
+    left: 65%;
+    width: 20px;
+    height: 20px;
+    --d: 22s;
+    --delay: -7s;
+}
+
+.circles li:nth-child(6) {
+    left: 75%;
+    width: 110px;
+    height: 110px;
+    --d: 24s;
+    --delay: -11s;
+}
+
+.circles li:nth-child(7) {
+    left: 35%;
+    width: 150px;
+    height: 150px;
+    --d: 26s;
+    --delay: -4s;
+}
+
+.circles li:nth-child(8) {
+    left: 50%;
+    width: 25px;
+    height: 25px;
+    --d: 30s;
+    --delay: -15s;
+}
+
+.circles li:nth-child(9) {
+    left: 20%;
+    width: 15px;
+    height: 15px;
+    --d: 28s;
+    --delay: -6s;
+}
+
+.circles li:nth-child(10) {
+    left: 85%;
+    width: 150px;
+    height: 150px;
+    --d: 14s;
+    --delay: -8s;
+}
+
+@keyframes rise {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+        border-radius: 0;
+    }
+    85% {
+        transform: translateY(calc(-1 * var(--vh))) rotate(576deg);
+        opacity: 1;
+        border-radius: 25%;
+    }
+    100% {
+        transform: translateY(calc(-1 * var(--vh) - var(--bleed))) rotate(720deg);
+        opacity: 0;
+        border-radius: 50%;
+    }
 }
