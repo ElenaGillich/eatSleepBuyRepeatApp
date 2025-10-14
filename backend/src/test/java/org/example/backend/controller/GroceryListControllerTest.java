@@ -248,6 +248,7 @@ class GroceryListControllerTest {
     }
 
     @Test
+    @WithMockUser
     void addGroceryList_shouldReturnNewGroceryListWithTitle_whenCalledWithTitle() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/grocery-list")
@@ -281,6 +282,7 @@ class GroceryListControllerTest {
     }
 
     @Test
+    @WithMockUser
     void addGroceryList_shouldReturnNewGroceryListWithEmptyTitle_whenCalledOnlyWithSpaces() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/grocery-list")
@@ -306,6 +308,7 @@ class GroceryListControllerTest {
     }
 
     @Test
+    @WithMockUser
     void addGroceryList_shouldReturnNewGroceryListWithEmptyTitle_whenCalledWithNullTitle() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/grocery-list")
