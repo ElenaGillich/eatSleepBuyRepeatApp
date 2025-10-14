@@ -89,10 +89,11 @@ class ProductServiceTest {
         Product expected = new Product(id, "productTest1");
         when(mockRepo.findById(id)).thenReturn(Optional.of(expected));
 
-        productService.deleteProduct("111");
+        //when
+        productService.deleteProduct(id);
 
         //then
-        assertThrows(ResponseStatusException.class, ()->productService.getProductById("222"));
+        verify(mockRepo).deleteById(id);
     }
 
     @Test
