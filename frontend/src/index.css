@@ -61,8 +61,6 @@ button:focus-visible {
 @media (prefers-color-scheme: light) {
     :root {
         color: #213547;
-        /*background-color: #ffffff;*/
-        /*background-color: #F0F1FA;*/
         background: rgba(169, 173, 241, 0.37);
         background: linear-gradient(to left, rgba(143, 148, 251, 0.57), rgba(173, 175, 243, 0.23));
     }
@@ -87,14 +85,11 @@ button:focus-visible {
     }
 }
 
-/* small viewport */
 @supports (height: 100dvh) {
     :root {
         --vh: 100dvh;
     }
 }
-
-/* dynamic viewport */
 
 header {
     position: fixed;
@@ -160,7 +155,6 @@ header {
     object-fit: contain;
 }
 
-/* Фон позаду */
 .area {
     position: fixed;
     inset: calc(-1 * var(--bleed));
