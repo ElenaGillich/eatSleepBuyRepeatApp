@@ -14,8 +14,8 @@ export default function AllGroceryLists() {
 
     const [isEditing, setIsEditing] = useState(false);
     const [title, setTitle] = useState<string>("");
-    const [status, setStatus] = useState<Status>("OPEN");
     const [editingId, setEditingId] = useState<string | null>(null);
+    const [status, setStatus] = useState<Status>();
 
     function getAllGroceryLists() {
         axios.get("api/grocery-list")
@@ -34,14 +34,16 @@ export default function AllGroceryLists() {
             .catch(e => console.log(e))
     }
 
-    function updateGroceryList(id: string) {
+    function updateGroceryList(id: string, current: Status) {
+        const next: Status = current === "OPEN" ? "DONE" : "OPEN";
+
         axios.put("/api/grocery-list/" + id, {
             title: title,
-            status: status
+            status: next
         })
             .then(() => {
                 setGroceryList(prev => prev.map(list =>
-                list.id === id ? {...list, title, status} : list))
+                    list.id === id ? {...list, title, status: next} : list));
             })
             .catch(e => console.log(e))
     }
@@ -100,7 +102,18 @@ export default function AllGroceryLists() {
                                 ) : (
                                     <h3>{list.title}</h3>
                                 )}
-                                <h3 className={"grocery-list-card-text"}>{list.id} - {list.status}</h3>
+
+                                { isEditing && editingId === list.id ? (<select
+                                    value={status}
+                                    onChange={e => setStatus(e.target.value as Status)}
+                                >
+                                    <option value="OPEN">OPEN</option>
+                                    <option value="DONE">DONE</option>
+                                </select>
+                                ) : (
+                                    <h3 className={"grocery-list-card-text"}>{list.id} - {list.status}</h3>
+                                )}
+
                                 <ul className={"grocery-list-card-inner"}>
                                     {list.products.map(productList => (
                                         <div key={productList.product.name}
@@ -114,17 +127,17 @@ export default function AllGroceryLists() {
 
                                 {isEditing && editingId === list.id ? (
                                     <button onClick={() => {
-                                        updateGroceryList(list.id);
+                                        updateGroceryList(list.id, list.status);
                                         setIsEditing(false);
                                         setEditingId(null);
-                                    }}>
+                                    }} disabled={!title.trim()}>
                                         Save
                                     </button>
                                 ) : (
                                     <button onClick={() => {
                                         setIsEditing(true);
                                         setEditingId(list.id);
-                                        setTitle(list.title); // підставляємо поточний текст у інпут
+                                        setTitle(list.title);
                                     }}>
                                         ✎ Edit
                                     </button>
