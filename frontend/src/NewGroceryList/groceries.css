@@ -6,7 +6,7 @@
 .form {
     display: flex;
     flex-flow: column;
-    width: 700px;
+    width: 660px;
     background-color: #e4e4e4;
     padding: 20px;
     gap: 20px;
@@ -15,7 +15,7 @@
         width: 300px;
         border: 1px solid gray;
         padding: 0.7em 1.2em;
-        font-size: 1em;
+        font-size: 14px;
         border-radius: 5px;
 
         &.amount {
@@ -24,7 +24,7 @@
         }
 
         &.select {
-            width: 340px;
+            width: 336px;
         }
     }
 
@@ -42,8 +42,9 @@
 }
 
 label {
-    line-height: 2.3;
-    width: 150px;
-    text-align: right;
+    height: 40px;
+    width: 490px;
+    display: flex;
+    justify-content: space-between;
     color: gray;
 }
