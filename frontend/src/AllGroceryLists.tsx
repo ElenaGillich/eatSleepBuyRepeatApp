@@ -46,7 +46,7 @@ export default function AllGroceryLists() {
     }
 
     return (
-        <>
+        <div>
             <div>
                 <label> Search by ID:
                     <input type={"text"} placeholder={"Enter ID here"} value={searchId}
@@ -80,7 +80,9 @@ export default function AllGroceryLists() {
                                              className={"grocery-list-card-inner-elements"}>{productList.product.name} - {productList.quantity}</div>
                                     ))}
                                 </ul>
-                                <button className={"grocery-list-card-button"} onClick={() => handleDelete(list.id)}>🗑️ Delete</button>
+                                <button className={"grocery-list-card-button"}
+                                        onClick={() => handleDelete(list.id)}>🗑️ Delete
+                                </button>
                             </div>
                         ))) : (
                         <p>No grocery lists found...</p>
@@ -88,7 +90,7 @@ export default function AllGroceryLists() {
                     }
                 </div>
             </div>
-        </>
+        </div>
     )
 
 }

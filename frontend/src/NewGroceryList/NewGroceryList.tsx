@@ -29,16 +29,28 @@ export default function CreateNewList(props: NewGroceryListProps) {
     }
 
     function addProductToTheGroceryList() {
+        const nameOfProductToAdd: string = groceryName.trim().toLowerCase();
         const product: Product | undefined = availableProducts
             .find((product: Product) =>
-                product.name.toLowerCase().includes(groceryName.trim().toLowerCase())
+                product.name.toLowerCase() === nameOfProductToAdd
             );
 
         if (product) {
+            const productAlreadyInTheList = groceryListItems
+                .find(item => item.product.name.toLowerCase() == nameOfProductToAdd);
+
             const newItem: GroceryListItem = {
                 product: product,
-                quantity: quantity
+                quantity: productAlreadyInTheList ? (productAlreadyInTheList.quantity + quantity) : quantity
             };
+
+
+            if (productAlreadyInTheList) {
+                const reducedList = groceryListItems
+                    .filter(item => item.product !== productAlreadyInTheList.product);
+
+                setGroceryListItems(reducedList);
+            }
 
             setGroceryListItems(prevItems => [...prevItems, newItem]);
             setGroceryName("");
@@ -61,7 +73,6 @@ export default function CreateNewList(props: NewGroceryListProps) {
                     />
                 </label>
 
-
                 <h4>You can choose a product from the list or add it in the input field.</h4>
 
                 <label>
@@ -80,8 +91,9 @@ export default function CreateNewList(props: NewGroceryListProps) {
                         <option>
                             Products to select...
                         </option>
+
                         {availableProducts.map(p =>
-                            <option> {p.name} </option>
+                            <option key={p.name}> {p.name} </option>
                         )}
                     </select>
                 </label>
@@ -121,13 +133,22 @@ export default function CreateNewList(props: NewGroceryListProps) {
 
                 {
                     groceryListItems.length > 0 && <>
-                        <div className={"product-list"}>
+                        <ul className={"product-list"}>
                             {groceryListItems.map(item =>
-                                <p key={item.product.name}>
-                                    {item.product.name} ({item.quantity} units)
-                                </p>
+                                <li key={item.product.name}>
+                                    <p className="list-item">
+                                        {item.product.name} ({item.quantity} units)
+                                    </p>
+
+                                    <button
+                                        type={"button"}
+                                        className={"x-button"}
+                                        onClick={() => setGroceryListItems(groceryListItems
+                                            .filter(value => value.product.name !== item.product.name))}
+                                    > x </button>
+                                </li>
                             )}
-                        </div>
+                        </ul>
 
                         <button
                             type="button"
