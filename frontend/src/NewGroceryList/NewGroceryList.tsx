@@ -64,8 +64,7 @@ export default function CreateNewList(props: NewGroceryListProps) {
         <div>
             <h2>New grocery list</h2>
             <form className={"form"}>
-                <label>
-                    Name
+                <label> Name
                     <input
                         className={"form-field"}
                         placeholder={"Enter the name of your grocery list here..."}
@@ -75,8 +74,7 @@ export default function CreateNewList(props: NewGroceryListProps) {
 
                 <h4>You can choose a product from the list or add it in the input field.</h4>
 
-                <label>
-                    Available products
+                <label> Available products
                     <select
                         className={"form-field select"}
                         value={""}
@@ -99,8 +97,7 @@ export default function CreateNewList(props: NewGroceryListProps) {
                 </label>
 
                 <div className={"display-flex"}>
-                    <label>
-                        Selected product
+                    <label> Selected product
                         <input
                             type={"text"}
                             name={"groceryName"}
