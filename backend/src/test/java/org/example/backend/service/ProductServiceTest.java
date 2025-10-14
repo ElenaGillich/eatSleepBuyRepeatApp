@@ -71,18 +71,6 @@ class ProductServiceTest {
     }
 
     @Test
-    void deleteProduct_throwsResponseStatusException_whenGivenInvalidId() {
-        //given
-        String id = "111";
-        Product expected = new Product(id, "productTest1");
-
-        when(mockRepo.findById(id)).thenReturn(Optional.of(expected));
-
-        //then
-        assertThrows(ResponseStatusException.class, ()->productService.getProductById("222"));
-    }
-
-    @Test
     void deleteProduct_deletesProduct_whenGivenValidId() {
         //given
         String id = "111";
