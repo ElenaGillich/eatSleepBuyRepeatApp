@@ -44,4 +44,11 @@ public class GroceryListService {
 
         return groceryListRepo.save(newGroceryList);
     }
+
+    public GroceryList updateGroceryList(String id, GroceryListDto groceryListDto) {
+        GroceryList list = groceryListRepo.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("List with id: " + id + " not found!"));
+        GroceryList updated = new GroceryList(list.id(), groceryListDto.title(), list.products(), groceryListDto.status());
+        return groceryListRepo.save(updated);
+    }
 }

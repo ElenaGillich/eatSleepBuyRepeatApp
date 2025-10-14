@@ -3,6 +3,7 @@ import axios from "axios";
 import type {GroceryList} from "./model/GroceryList.tsx";
 import {useNavigate} from "react-router-dom";
 import './AllGroceryLists.css';
+import type {Status} from "./model/Status.ts";
 
 export default function AllGroceryLists() {
 
@@ -10,6 +11,11 @@ export default function AllGroceryLists() {
     const nav = useNavigate();
 
     const [searchId, setSearchId] = useState<string>("");
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [title, setTitle] = useState<string>("");
+    const [status, setStatus] = useState<Status>("OPEN");
+    const [editingId, setEditingId] = useState<string | null>(null);
 
     function getAllGroceryLists() {
         axios.get("api/grocery-list")
@@ -21,9 +27,21 @@ export default function AllGroceryLists() {
 
     function handleDelete(id: string) {
         console.log("Trying to delete ID:", id);
-        axios.delete("api/grocery-list/" + id)
+        axios.delete("/api/grocery-list/" + id)
             .then(() => {
                 setGroceryList(lists => lists.filter((list) => list.id !== id));
+            })
+            .catch(e => console.log(e))
+    }
+
+    function updateGroceryList(id: string) {
+        axios.put("/api/grocery-list/" + id, {
+            title: title,
+            status: status
+        })
+            .then(() => {
+                setGroceryList(prev => prev.map(list =>
+                list.id === id ? {...list, title, status} : list))
             })
             .catch(e => console.log(e))
     }
@@ -72,7 +90,16 @@ export default function AllGroceryLists() {
                     {groceryList.length > 0 ? (
                         groceryList.map(list => (
                             <div key={list.id} className={"grocery-list-card"}>
-                                <h3>{list.title}</h3>
+
+                                {isEditing && editingId === list.id ? (
+                                    <input type={"text"}
+                                           value={title}
+                                           onChange={e =>
+                                               setTitle(e.target.value)}
+                                    />
+                                ) : (
+                                    <h3>{list.title}</h3>
+                                )}
                                 <h3 className={"grocery-list-card-text"}>{list.id} - {list.status}</h3>
                                 <ul className={"grocery-list-card-inner"}>
                                     {list.products.map(productList => (
@@ -80,9 +107,28 @@ export default function AllGroceryLists() {
                                              className={"grocery-list-card-inner-elements"}>{productList.product.name} - {productList.quantity}</div>
                                     ))}
                                 </ul>
+
                                 <button className={"grocery-list-card-button"}
                                         onClick={() => handleDelete(list.id)}>🗑️ Delete
                                 </button>
+
+                                {isEditing && editingId === list.id ? (
+                                    <button onClick={() => {
+                                        updateGroceryList(list.id);
+                                        setIsEditing(false);
+                                        setEditingId(null);
+                                    }}>
+                                        Save
+                                    </button>
+                                ) : (
+                                    <button onClick={() => {
+                                        setIsEditing(true);
+                                        setEditingId(list.id);
+                                        setTitle(list.title); // підставляємо поточний текст у інпут
+                                    }}>
+                                        ✎ Edit
+                                    </button>
+                                )}
                             </div>
                         ))) : (
                         <p>No grocery lists found...</p>

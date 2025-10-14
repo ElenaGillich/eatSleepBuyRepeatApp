@@ -42,4 +42,9 @@ public class GroceryListController {
     public GroceryList addGroceryList(@RequestBody GroceryListDto groceryListDto) {
         return service.addGroceryList(groceryListDto);
     }
+
+    @PutMapping("/{id}")
+    public GroceryList updateGroceryList(@PathVariable String id, @RequestBody GroceryListDto groceryListDto) {
+        return service.updateGroceryList(id, groceryListDto);
+    }
 }
