@@ -24,7 +24,7 @@ export default function CreateNewList(props: NewGroceryListProps) {
             products: groceryListItems,
             status: "OPEN"
         })
-            .then(() => nav("/allGroceryLists"))
+            .then(() => nav("/home"))
             .catch(error => console.log(error));
     }
 
