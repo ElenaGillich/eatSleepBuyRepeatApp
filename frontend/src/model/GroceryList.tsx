@@ -3,6 +3,7 @@ import type {ProductListItem} from "./ProductListItem.ts";
 
 export type GroceryList = {
     id: string,
+    title: string,
     products: ProductListItem[],
     status: Status;
 }

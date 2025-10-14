@@ -37,6 +37,7 @@ public class GroceryListService {
     public GroceryList addGroceryList(GroceryListDto groceryListDto) {
         GroceryList newGroceryList = new GroceryList(
                 idService.randomId(),
+                groceryListDto.title() == null || groceryListDto.title().isBlank() ? "" : groceryListDto.title(),
                 groceryListDto.products(),
                 groceryListDto.status()
         );

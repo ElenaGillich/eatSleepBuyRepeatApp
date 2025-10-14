@@ -13,16 +13,18 @@ export default function CreateNewList(props: NewGroceryListProps) {
     const availableProducts: Product[] = props.products ?? [];
 
     const nav = useNavigate();
+    const [title, setTitle] = useState<string>("")
     const [groceryName, setGroceryName] = useState<string>("")
     const [quantity, setQuantity] = useState<number>(1)
     const [groceryListItems, setGroceryListItems] = useState<GroceryListItem[]>([])
 
     function save() {
         axios.post("api/grocery-list", {
+            title: title,
             products: groceryListItems,
             status: "OPEN"
         })
-            .then(() => nav("/allGroceryLists"))
+            .then(() => nav("/home"))
             .catch(error => console.log(error));
     }
 
@@ -62,12 +64,17 @@ export default function CreateNewList(props: NewGroceryListProps) {
         <div>
             <h2>New grocery list</h2>
             <form className={"form"}>
+                <label> Name{' '}
+                    <input
+                        className={"form-field"}
+                        placeholder={"Enter the name of your grocery list here..."}
+                        onChange={(event) => setTitle(event.target.value)}
+                    />
+                </label>
 
                 <h4>You can choose a product from the list or add it in the input field.</h4>
 
-                <div className={"display-flex"}>
-                    <label>Available products</label>
-
+                <label> Available products{' '}
                     <select
                         className={"form-field select"}
                         value={""}
@@ -87,23 +94,25 @@ export default function CreateNewList(props: NewGroceryListProps) {
                             <option key={p.name}> {p.name} </option>
                         )}
                     </select>
-                </div>
+                </label>
 
                 <div className={"display-flex"}>
-                    <label> Selected product </label>
-                    <input
-                        type={"text"}
-                        name={"groceryName"}
-                        value={groceryName}
-                        className={"form-field"}
-                        onChange={event => setGroceryName(event.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                                e.preventDefault();
-                                addProductToTheGroceryList();
-                            }
-                        }}
-                    />
+                    <label> Selected product{' '}
+                        <input
+                            type={"text"}
+                            name={"groceryName"}
+                            value={groceryName}
+                            className={"form-field"}
+                            onChange={event => setGroceryName(event.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    addProductToTheGroceryList();
+                                }
+                            }}
+                        />
+                    </label>
+
                     <input
                         type={"number"}
                         name={"quantity"}
