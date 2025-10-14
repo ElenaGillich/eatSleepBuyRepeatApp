@@ -1,4 +1,5 @@
 import {Link} from "react-router-dom";
+import Logout from "./Logout.tsx";
 
 export default function Navbar() {
 
@@ -11,6 +12,7 @@ export default function Navbar() {
             <nav className={"navbar"}>
                 <Link className={"nav-button"} to={"/home"}>Home</Link>
                 <Link className={"nav-button"} to={"/allProducts"}>All Products</Link>
+                <Logout/>
             </nav>
         </header>
     )

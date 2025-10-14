@@ -9,9 +9,12 @@ import axios from "axios";
 import AllGroceryLists from "./AllGroceryLists.tsx";
 import CreateNewList from "./NewGroceryList/NewGroceryList.tsx";
 import Login from "./Login.tsx";
+import ProtectedRoute from "./ProtectedRoute.tsx";
 
 function App() {
+    const [user, setUser] = useState<string|undefined|null>(undefined);
     const [products, setProducts] = useState<Product[]>([]);
+
     useEffect(() => {
         loadAllProducts()
     }, []);
@@ -26,13 +29,14 @@ function App() {
         <>
             <Navbar/>
             <Routes>
-                <Route path={"/"} element={<Login/>}/>
-                <Route path={"/newProduct"} element={<NewProduct/>}/>
-                <Route path={"/allProducts"} element={<AllProducts/>}/>
-                <Route path={"/home"} element={<AllGroceryLists/>}/>
-                <Route path={"/addGroceryList"} element={<CreateNewList products={products}/>}/>
+                <Route path={"/"} element={<Login setUser={setUser}/>}/>
+                <Route element={<ProtectedRoute user={user}/>}>
+                    <Route path={"/newProduct"} element={<NewProduct/>}/>
+                    <Route path={"/allProducts"} element={<AllProducts/>}/>
+                    <Route path={"/home"} element={<AllGroceryLists/>}/>
+                    <Route path={"/addGroceryList"} element={<CreateNewList products={products}/>}/>
+                </Route>
             </Routes>
-
         </>
     )
 }
