@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -36,6 +37,7 @@ class ProductControllerTest {
 
     @DirtiesContext
     @Test
+    @WithMockUser
     void updateProductById_shouldUpdateProduct() throws Exception {
         Product banana = new Product("001", "Banana");
         productRepo.save(banana);
@@ -60,6 +62,7 @@ class ProductControllerTest {
 
     @DirtiesContext
     @Test
+    @WithMockUser
     void updateProductById_shouldThrowException() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/products/005")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -75,6 +78,7 @@ class ProductControllerTest {
 
     @DirtiesContext
     @Test
+    @WithMockUser
     void getAllProducts_returnListWithOneProduct_WhenCalled() throws Exception {
         //given
         Product product = new Product("1", "productTest");
@@ -96,6 +100,7 @@ class ProductControllerTest {
 
     @DirtiesContext
     @Test
+    @WithMockUser
     void getAllProducts_returnEmptyList_WhenNoProductAdded() throws Exception {
         //given
 
@@ -113,6 +118,7 @@ class ProductControllerTest {
 
     @DirtiesContext
     @Test
+    @WithMockUser
     void addNewProduct_returnProduct_WhenProductAdded() throws Exception {
         //when
         mockMvc.perform(post("/api/products")

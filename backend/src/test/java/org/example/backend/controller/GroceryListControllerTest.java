@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -40,6 +41,7 @@ class GroceryListControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAllGrocery_whenEmpty() throws Exception {
         //GIVEN
 
@@ -51,6 +53,7 @@ class GroceryListControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAllGrocery_whenNotEmpty_return200AndExpectedJson() throws Exception {
         //GIVEN
         Product banana = new Product("1", "banana");
@@ -108,6 +111,7 @@ class GroceryListControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAll_structureSmokeTest() throws Exception {
         productRepo.save(new Product("1", "Milk"));
         groceryListRepo.save(new GroceryList("1",
@@ -123,6 +127,7 @@ class GroceryListControllerTest {
 
     @DirtiesContext
     @Test
+    @WithMockUser
     void getGroceryListById_shouldReturn_CorrectList() throws Exception {
         Product banana = new Product("001", "Banana");
         Product apple = new Product("002", "Apple");
@@ -161,6 +166,7 @@ class GroceryListControllerTest {
 
     @DirtiesContext
     @Test
+    @WithMockUser
     void getGroceryListById_whenNotFound_shouldThrowException() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/grocery-list/4"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
@@ -168,6 +174,7 @@ class GroceryListControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void deleteGroceryList_wehenInvalid_thenStatus404() throws Exception {
         //GIVEN
         //WHEN //THEN
@@ -179,6 +186,7 @@ class GroceryListControllerTest {
     }
     @Test
     @DirtiesContext
+    @WithMockUser
     void deleteGroceryList_shouldReturnStatus204() throws Exception {
         //GIVEN
         Product banana = new Product("1", "banana");
@@ -199,6 +207,7 @@ class GroceryListControllerTest {
     }
 
     @Test
+    @WithMockUser
     void addGroceryList_shouldReturnNewCreatedGroceryList() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/grocery-list")
