@@ -15,7 +15,7 @@ import java.util.Objects;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${APP_URL}")
+    @Value("${app.url}")
     private String appURL;
 
     @Bean
