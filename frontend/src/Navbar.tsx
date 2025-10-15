@@ -12,6 +12,7 @@ export default function Navbar() {
             <nav className={"navbar"}>
                 <Link className={"nav-button"} to={"/home"}>Home</Link>
                 <Link className={"nav-button"} to={"/allProducts"}>All Products</Link>
+                <Link className={"nav-button"} to={"/addGroceryList"}>Add new grocery list</Link>
                 <Logout/>
             </nav>
         </header>
