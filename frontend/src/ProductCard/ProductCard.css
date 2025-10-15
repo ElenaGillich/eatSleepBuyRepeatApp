@@ -1,3 +1,9 @@
+.product-column {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .product {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     border-radius: 8px;

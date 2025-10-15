@@ -3,6 +3,7 @@ import type {Product} from "./model/Product.tsx";
 import axios from "axios";
 import ProductCard from "./ProductCard/ProductCard.tsx";
 import {useNavigate} from "react-router-dom";
+
 export default function AllProducts() {
     const [products, setProducts] = useState<Product[]>([]);
 
@@ -13,19 +14,23 @@ export default function AllProducts() {
             .catch(e => console.log(e))
     }
 
-    function goToNewProductForm(){
+    function goToNewProductForm() {
         nav("/newProduct")
     }
+
     useEffect(() => {
         getAllProducts()
     }, []);
 
-    return(
+    return (
         <>
             <button onClick={goToNewProductForm}>New Product</button>
-            {products.map(p =>
-                <ProductCard key={p.id} product={p} />
-            )}
+            <h2>Your available products:</h2>
+            <div className={"product-column"}>
+                {products.map(p =>
+                    <ProductCard key={p.id} product={p}/>
+                )}
+            </div>
         </>
     )
 }
