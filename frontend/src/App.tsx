@@ -1,6 +1,6 @@
 import './App.css'
 import './index.css'
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, useNavigate} from "react-router-dom";
 import AllProducts from "./AllProducts.tsx";
 import Navbar from "./Navbar.tsx";
 import NewProduct from "./NewProduct.tsx";
@@ -13,12 +13,26 @@ import Login from "./Login.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
 
 function App() {
+    const nav = useNavigate();
     const [user, setUser] = useState<string|undefined|null>(undefined);
     const [products, setProducts] = useState<Product[]>([]);
 
     useEffect(() => {
+        loadUser();
         loadAllProducts()
     }, []);
+
+    const loadUser = () => {
+        axios.get("/api/auth/me")
+            .then((response) => {
+                setUser(response.data);
+                nav(window.location.pathname === "/" ? "/home" : window.location.pathname);
+            })
+            .catch((e) => {
+                setUser(null);
+                console.log(e);
+            })
+    }
 
     function loadAllProducts() {
         axios.get("api/products")
@@ -37,7 +51,7 @@ function App() {
 
             <Navbar/>
             <Routes>
-                <Route path={"/"} element={<Login setUser={setUser}/>}/>
+                <Route path={"/"} element={<Login/>}/>
                 <Route element={<ProtectedRoute user={user}/>}>
                     <Route path={"/newProduct"} element={<NewProduct/>}/>
                     <Route path={"/allProducts"} element={<AllProducts/>}/>

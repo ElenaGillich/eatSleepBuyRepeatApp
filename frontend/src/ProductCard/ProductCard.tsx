@@ -2,9 +2,11 @@ import type {Product} from "../model/Product.tsx";
 import './ProductCard.css'
 import {useState, useEffect} from "react";
 import axios from "axios";
+import DeleteButton from "./DeleteButton.tsx";
 
 type ProductCardProps = {
-    product: Product
+    product: Product;
+    handleDeleteFromList: (id: string) => void;
 }
 
 export default function ProductCard(props: Readonly<ProductCardProps>) {
@@ -46,6 +48,7 @@ export default function ProductCard(props: Readonly<ProductCardProps>) {
                 updateProduct();
                 setIsEditing(!isEditing)
             }}>Save</button>}
+            {!isEditing && <DeleteButton productId={props.product.id} onDelete={props.handleDeleteFromList}/>}
         </div>
     )
 }

@@ -16,6 +16,10 @@ public class ProductService {
     private final IdService idService;
     private final ProductRepo productRepo;
 
+    private String buildProductNotFoundMessage(String id) {
+        return "Product with id " + id + " not found";
+    }
+
     public ProductService(IdService idService, ProductRepo productRepo) {
         this.idService = idService;
         this.productRepo = productRepo;
@@ -33,9 +37,20 @@ public class ProductService {
         return productRepo.save(newProduct);
     }
 
+    public Product getProductById(String id) {
+        return productRepo.findById(id)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, buildProductNotFoundMessage(id)));
+    }
+
+    public void deleteProduct(String id) {
+        Product existing = productRepo.findById(id)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, buildProductNotFoundMessage(id)));
+        productRepo.deleteById(existing.id());
+    }
+
     public Product updateProductById(String id, ProductDto value) {
         Product existing = productRepo.findById(id)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product with id " + id + " not found"));
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, buildProductNotFoundMessage(id)));
         Product updated = new Product(existing.id(), value.name());
         return productRepo.save(updated);
     }

@@ -1,13 +1,34 @@
-.product {
-    background-color: blue;
-    border-radius: 5px;
-
+.product-column {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
-.product:hover {
-         background-color: dodgerblue;
-         font-size: 18px;
-     }
 
+.product {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    margin: 20px;
+    padding: 1px 20px 15px 25px;
+    background: linear-gradient(
+            45deg,
+            rgba(52, 152, 219, 0.53),
+            rgba(155, 89, 182, 0.49)
+    );
+    backdrop-filter: blur(8px);
+    transition: transform 0.5s ease, box-shadow 0.3s ease;
+}
+
+.product:hover {
+    transform: scale(1.03);
+    filter: brightness(1.2);
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
+}
+
+.product-text {
+    margin-top: 8px;
+}
 .button-copied{
     background-color: green;
 }
+
+
