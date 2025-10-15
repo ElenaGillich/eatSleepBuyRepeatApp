@@ -1,13 +1,13 @@
 import type {Product} from "../model/Product.tsx";
 import './ProductCard.css'
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import axios from "axios";
 
 type ProductCardProps = {
     product: Product
 }
 
-export default function ProductCard(props: Readonly<ProductCardProps>){
+export default function ProductCard(props: Readonly<ProductCardProps>) {
 
     const [isEditing, setIsEditing] = useState(false);
     const [name, setName] = useState(props.product.name);
@@ -18,14 +18,34 @@ export default function ProductCard(props: Readonly<ProductCardProps>){
             .catch((e) => console.log(e))
     }
 
-    return(
-            <div className={"product"}>
-                {!isEditing && <h2>{name}</h2>}
-                {isEditing && <input type={"text"} value={name} onChange={(e) => setName(e.target.value)}/>}
+    const [isCopied, setIsCopied] = useState(false);
 
-                <h3>ID: {props.product.id}</h3>
-                {!isEditing && <button onClick={() =>setIsEditing(!isEditing)}> ✎Edit</button>}
-                {isEditing && <button onClick={() => {updateProduct(); setIsEditing(!isEditing) }}>Save</button>}
-            </div>
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            setIsCopied(false);
+        }, 2000);
+        return () => clearTimeout(timeoutId);
+    }, [copyToClipboard]);
+
+    function copyToClipboard() {
+        navigator.clipboard.writeText(props.product.id);
+        console.log("Copied ID to Clipboard: ", props.product.id)
+        setIsCopied(true);
+    }
+
+    return (
+        <div className={"product"}>
+            {!isEditing && <h2>{name}</h2>}
+            {isEditing && <input type={"text"} value={name} onChange={(e) => setName(e.target.value)}/>}
+
+            {!isCopied && <button onClick={copyToClipboard}>📎 Copy ID</button>}
+            {isCopied && <button className={"button-copied"}>✓ Copied!</button>}
+
+            {!isEditing && <button onClick={() => setIsEditing(!isEditing)}> ✎Edit</button>}
+            {isEditing && <button onClick={() => {
+                updateProduct();
+                setIsEditing(!isEditing)
+            }}>Save</button>}
+        </div>
     )
 }
