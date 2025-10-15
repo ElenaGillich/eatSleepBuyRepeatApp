@@ -21,16 +21,20 @@ export default function AllProducts() {
     function goToNewProductForm(){
         nav("/newProduct")
     }
+
     useEffect(() => {
         getAllProducts()
     }, []);
 
-    return(
+    return (
         <>
             <button onClick={goToNewProductForm}>New Product</button>
-            {products.map(p =>
-                <ProductCard key={p.id} product={p} handleDeleteFromList={handleDeleteFromList} />
-            )}
+            <h2>Your available products:</h2>
+            <div className={"product-column"}>
+                {products.map(p =>
+                    <ProductCard key={p.id} product={p} handleDeleteFromList={handleDeleteFromList} />
+                )}
+            </div>
         </>
     )
 }
