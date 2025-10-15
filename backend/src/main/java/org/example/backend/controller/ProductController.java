@@ -22,11 +22,17 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
+    @GetMapping("/{id}")
+    public Product getProductById(@PathVariable String id) { return productService.getProductById(id); }
+
     @PostMapping
     public Product addNewProduct(@RequestBody ProductDto product){
         return productService.addNewProduct(product);
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable String id) { productService.deleteProduct(id); }
+  
     @PutMapping("/{id}")
     public Product updateProductById(@PathVariable String id, @RequestBody ProductDto value) {
         return productService.updateProductById(id, value);

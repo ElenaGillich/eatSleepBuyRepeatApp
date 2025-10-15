@@ -14,7 +14,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
@@ -139,6 +139,65 @@ class ProductControllerTest {
                                  }
                                 """
                 ));
+    }
+
+    @DirtiesContext
+    @Test
+    void getProductById_returnsOneProduct_whenGivenValidId() throws Exception {
+        //given
+        Product product = new Product("123", "Banana");
+        productRepo.save(product);
+        //when
+        mockMvc.perform(get("/api/products/123"))
+                //then
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(
+                        """     
+                        {
+                        "id": "123",
+                        "name": "Banana"
+                        }
+                        """
+                ));
+    }
+
+    @DirtiesContext
+    @Test
+    void getProductById_returnsNotFoundHeader_whenGivenInvalidId() throws Exception {
+        //given
+        Product product = new Product("123", "Banana");
+        productRepo.save(product);
+        //when
+        mockMvc.perform(get("/api/products/123sadjlsdahlasdhgklhsdlfhasdfhljasdhf"))
+                //then
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @DirtiesContext
+    @Test
+    void deleteProduct_returnsOKHeader_whenGivenValidProduct() throws Exception {
+        //given
+        Product product = new Product("123", "Banana");
+        productRepo.save(product);
+        //when
+        mockMvc.perform(
+                        delete("/api/products/123"))
+                //then
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @DirtiesContext
+    @Test
+    void deleteProduct_returnsNotFoundHeader_whenGivenInvalidProduct() throws Exception {
+        //given
+        Product product = new Product("123", "Banana");
+        productRepo.save(product);
+        //when
+        mockMvc.perform(
+                        delete("/api/products/123456789"))
+                //then
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+
     }
 
 }
