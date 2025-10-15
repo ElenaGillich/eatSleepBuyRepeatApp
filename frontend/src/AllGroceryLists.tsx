@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import type {GroceryList} from "./model/GroceryList.tsx";
 import './AllGroceryLists.css';
+import '../src/NewGroceryList/groceries.css';
 
 export default function AllGroceryLists() {
 
@@ -45,18 +46,21 @@ export default function AllGroceryLists() {
 
     return (
         <div>
-            <div>
-                <label> Search by ID:
-                    <input type={"text"} placeholder={"Enter ID here"} value={searchId}
-                           onChange={(e) => {
-                               setSearchId(e.target.value);
-                               if (!e.target.value) {
-                                   return getAllGroceryLists();
-                               }
-                           }}/>
-                </label>
-                <button onClick={handleIdSearch}>Search</button>
-            </div>
+            <form className={"form search"}>
+                <div className="display-flex">
+                    <label className="search-label"> Search by ID:{' '}
+                        <input
+                            className={"form-field"} type={"text"} placeholder={"Enter ID here"} value={searchId}
+                            onChange={(e) => {
+                                setSearchId(e.target.value);
+                                if (!e.target.value) {
+                                    return getAllGroceryLists();
+                                }
+                            }}/>
+                    </label>
+                    <button onClick={handleIdSearch}>Search</button>
+                </div>
+            </form>
 
             <div className={"main-page-for-all-lists"}>
 
