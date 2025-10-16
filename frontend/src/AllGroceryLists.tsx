@@ -4,6 +4,7 @@ import type {GroceryList} from "./model/GroceryList.tsx";
 import './AllGroceryLists.css';
 import '../src/NewGroceryList/groceries.css';
 import type {Status} from "./model/Status.ts";
+import {useNavigate} from "react-router-dom";
 
 export default function AllGroceryLists() {
 
@@ -33,18 +34,9 @@ export default function AllGroceryLists() {
             .catch(e => console.log(e))
     }
 
-    function updateGroceryList(id: string, current: Status) {
-        const next: Status = current === "OPEN" ? "DONE" : "OPEN";
-
-        axios.put("/api/grocery-list/" + id, {
-            title: title,
-            status: next
-        })
-            .then(() => {
-                setGroceryList(prev => prev.map(list =>
-                    list.id === id ? {...list, title, status: next} : list));
-            })
-            .catch(e => console.log(e))
+    const nav = useNavigate();
+    function updateGroceryList(id: string) {
+      nav("/editGroceryListForm/" + id)
     }
 
     useEffect(() => {
@@ -122,23 +114,10 @@ export default function AllGroceryLists() {
                                         onClick={() => handleDelete(list.id)}>🗑️ Delete
                                 </button>
 
-                                {isEditing && editingId === list.id ? (
-                                    <button onClick={() => {
-                                        updateGroceryList(list.id, list.status);
-                                        setIsEditing(false);
-                                        setEditingId(null);
-                                    }} disabled={!title.trim()}>
-                                        Save
-                                    </button>
-                                ) : (
-                                    <button onClick={() => {
-                                        setIsEditing(true);
-                                        setEditingId(list.id);
-                                        setTitle(list.title);
-                                    }}>
+
+                                    <button onClick={()=>updateGroceryList(list.id)}>
                                         ✎ Edit
                                     </button>
-                                )}
                             </div>
                         ))) : (
                         <p>No grocery lists found...</p>

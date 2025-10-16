@@ -11,6 +11,7 @@ import AllGroceryLists from "./AllGroceryLists.tsx";
 import CreateNewList from "./NewGroceryList/NewGroceryList.tsx";
 import Login from "./Login.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
+import EditGroceryListForm from "./EditGroceryListForm.tsx";
 
 function App() {
     const nav = useNavigate();
@@ -57,6 +58,7 @@ function App() {
                     <Route path={"/allProducts"} element={<AllProducts/>}/>
                     <Route path={"/home"} element={<AllGroceryLists/>}/>
                     <Route path={"/addGroceryList"} element={<CreateNewList products={products}/>}/>
+                    <Route path={"/editGroceryListForm/:id"} element={<EditGroceryListForm/>}/>
                 </Route>
             </Routes>
         </>
