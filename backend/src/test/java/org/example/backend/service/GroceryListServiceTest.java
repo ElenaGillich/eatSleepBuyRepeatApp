@@ -4,6 +4,7 @@ import org.example.backend.model.*;
 import org.example.backend.repo.GroceryListRepo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.AdditionalAnswers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
@@ -167,5 +168,51 @@ class GroceryListServiceTest {
         //THEN
         verify(groceryListRepo).save(expected);
         assertEquals(actual, expected);
+    }
+
+    @Test
+    void updateGroceryList_shouldThrowException_whenIdWasFound() {
+        //GIVEN
+        Product banana = new Product("1", "Banana");
+        GroceryListDto updated =
+                new GroceryListDto("New Title A", List.of(
+                        new ProductListItem(banana, 5)
+                ), Status.OPEN);
+
+        when(groceryListRepo.findById("002")).thenReturn(Optional.empty());
+
+        //WHEN //THEN
+        assertThrows(NoSuchElementException.class, () -> groceryListService.updateGroceryList("002", updated));
+        verify(groceryListRepo).findById("002");
+        verifyNoMoreInteractions(groceryListRepo);
+    }
+
+    @Test
+    void updateGroceryList_shouldReturnUpdatedTitle_whenIdWasNotFound() {
+        //GIVEN
+        Product banana = new Product("1", "Banana");
+        GroceryList existing =
+                new GroceryList("001","Title A", List.of(
+                        new ProductListItem(banana, 5)
+                ), Status.OPEN);
+
+        GroceryListDto expecting =
+                new GroceryListDto("New Title A", List.of(
+                        new ProductListItem(banana, 5)
+                ), Status.OPEN);
+
+        when(groceryListRepo.findById("001")).thenReturn(Optional.of(existing));
+        when(groceryListRepo.save(any(GroceryList.class))).then(AdditionalAnswers.returnsFirstArg());
+
+        //WHEN
+
+        GroceryList updated = groceryListService.updateGroceryList("001", expecting);
+
+        //THEN
+        assertEquals("001", updated.id());
+        assertEquals("New Title A", updated.title());
+        verify(groceryListRepo).findById("001");
+        verify(groceryListRepo).save(updated);
+        verifyNoMoreInteractions(groceryListRepo);
     }
 }
